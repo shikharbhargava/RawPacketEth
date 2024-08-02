@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="620" height="500">
+    <rect x="10" y="10" width="600" height="480" style="fill:none;stroke-width:20;stroke:#4690b2" />
+    <rect x="60" y="60" width="80" height="50" style="fill:none;stroke-width:20;stroke:#4690b2" />
+    <rect x="480" y="60" width="80" height="50" style="fill:none;stroke-width:20;stroke:#4690b2" />
+    <path d="M 70 170 L 190 170 L 190 95 L 230 95 L 230 60 L 380 60 L 380 95 L 420 95 L 420 170 L 550 170 L 550 420 L 70 420 z" width="80" height="50" style="fill:none;stroke-width:20;stroke:#4690b2" />
+    <g id="line">
+        <rect x="170" y="280" width="1" height="70" style="fill:none;stroke-width:20;stroke:#4690b2" />
+    </g>
+    <use href="#line" transform="translate(40)"/>
+    <use href="#line" transform="translate(80)"/>
+    <use href="#line" transform="translate(120)"/>
+    <use href="#line" transform="translate(160)"/>
+    <use href="#line" transform="translate(200)"/>
+    <use href="#line" transform="translate(240)"/>
+    <use href="#line" transform="translate(280)"/>
+</svg>

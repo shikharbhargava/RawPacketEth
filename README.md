@@ -1,49 +1,27 @@
-<!-- Improved compatibility of back to top link: See: https://github.com/shikharbhargava/SendRawEthernet/pull/73 -->
 <a id="readme-top"></a>
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
-
-
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
 
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
-
-
-
-<!-- PROJECT LOGO -->
+<br />
+<br />
 <br />
 <div align="center">
-  <a href="https://github.com/shikharbhargava/SendRawEthernet">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/shikharbhargava/raw-packet-eth-win">
+    <img src="images/logo.svg" alt="Logo" width="62" height="50">
   </a>
-
   <h3 align="center">Best-README-Template</h3>
 
   <p align="center">
     An awesome README template to jumpstart your projects!
     <br />
-    <a href="https://github.com/shikharbhargava/SendRawEthernet"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/shikharbhargava/raw-packet-eth-win"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/shikharbhargava/SendRawEthernet">View Demo</a>
+    <a href="https://github.com/shikharbhargava/raw-packet-eth-win">View Demo</a>
     ·
-    <a href="https://github.com/shikharbhargava/SendRawEthernet/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/shikharbhargava/raw-packet-eth-win/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
-    <a href="https://github.com/shikharbhargava/SendRawEthernet/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/shikharbhargava/raw-packet-eth-win/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
 
@@ -172,7 +150,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
     - [ ] Chinese
     - [ ] Spanish
 
-See the [open issues](https://github.com/shikharbhargava/SendRawEthernet/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/shikharbhargava/raw-packet-eth-win/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -237,15 +215,15 @@ Use this space to list resources you find helpful and would like to give credit 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/shikharbhargava/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/shikharbhargava/SendRawEthernet/graphs/contributors
+[contributors-url]: https://github.com/shikharbhargava/raw-packet-eth-win/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/shikharbhargava/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/shikharbhargava/SendRawEthernet/network/members
+[forks-url]: https://github.com/shikharbhargava/raw-packet-eth-win/network/members
 [stars-shield]: https://img.shields.io/github/stars/shikharbhargava/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/shikharbhargava/SendRawEthernet/stargazers
+[stars-url]: https://github.com/shikharbhargava/raw-packet-eth-win/stargazers
 [issues-shield]: https://img.shields.io/github/issues/shikharbhargava/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/shikharbhargava/SendRawEthernet/issues
-[license-shield]: https://img.shields.io/github/license/shikharbhargava/SendRawEthernet?style=for-the-badge
-[license-url]: https://github.com/shikharbhargava/SendRawEthernet/MIT-LICENSE.txt
+[issues-url]: https://github.com/shikharbhargava/raw-packet-eth-win/issues
+[license-shield]: https://img.shields.io/github/license/shikharbhargava/raw-packet-eth-win?style=for-the-badge
+[license-url]: https://github.com/shikharbhargava/raw-packet-eth-win/MIT-LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
 [linkedin-url]: https://linkedin.com/in/shikharbhargava
 [product-screenshot]: images/screenshot.png
