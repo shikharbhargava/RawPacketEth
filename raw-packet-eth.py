@@ -66,7 +66,12 @@ class MyArgumentParser(ArgumentParser):
                     replace_list = split_string_with_textwrap(replace_str, maxLength)
                     replace_str = replace_list[0]
                     for i in range(1, len(replace_list)):
-                        replace_str = replace_str + '\n' + ' ' * colmn_size + replace_list[i]
+                        next_line = ' ' * colmn_size + replace_list[i]
+                        new_replace_list = split_string_with_textwrap(next_line, maxLength)
+                        next_line = new_replace_list[0]
+                        for j in range(1, len(new_replace_list)):
+                            next_line = next_line + '\n' + ' ' * colmn_size + new_replace_list[i]
+                        replace_str = replace_str + '\n' + next_line
                     message = message.replace(search, replace_str)
                 message = re.sub(options_regex, r'{}\1{}\6{}\7{}'.format(Fore.YELLOW, Style.RESET_ALL, Fore.GREEN   , Style.RESET_ALL), message)
                 message = f'{Fore.YELLOW}program{Style.RESET_ALL}: {Fore.CYAN}{prog_name} {Fore.YELLOW}version{Style.RESET_ALL}: {Fore.CYAN}{prog_version}{Style.RESET_ALL}\n\n{message}'
