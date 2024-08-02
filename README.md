@@ -7,7 +7,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/shikharbhargava/raw-packet-eth-win">
-    <img src="images/logo.svg" alt="Logo" width="62" height="50">
+    <img src="images/logo.svg" alt="Logo" width="100" height="100">
   </a>
   <h3 align="center">Best-README-Template</h3>
 
