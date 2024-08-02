@@ -13,5 +13,5 @@
         <use href="#arrow" transform="translate(0 70)"/>
         <use href="#arrow" transform="translate(0 140)"/>
     </g>
-    <use href="#arrow-collection" transform-origin="250 250"; transform="rotate(180)"/>
+    <use href="#arrow-collection" transform-origin="250 250" transform="rotate(180)"/>
 </svg>
