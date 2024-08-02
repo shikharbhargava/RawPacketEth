@@ -5,8 +5,6 @@ import sys
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-server_socket.bind(("0.0.0.0", 9999))
-server_socket.listen(5)
 sockets = [server_socket]
 
 def signal_handler(sig, frame):
@@ -20,8 +18,12 @@ def signal_handler(sig, frame):
                 pass
     sys.exit(0)
 
-def main():
-    signal.signal(signal.SIGINT, signal_handler)
+def tcp_server_socket():
+    return server_socket
+
+def tcp_server(address:str = "0.0.0.0", port:int = 9999):
+    server_socket.bind((address, port))
+    server_socket.listen(5)
     while True:
         try:
             readable, _, _ = select.select(sockets, [], [], 1)
@@ -43,4 +45,5 @@ def main():
             break
 
 if __name__ == "__main__":
-    main()
+    signal.signal(signal.SIGINT, signal_handler)
+    tcp_server()
