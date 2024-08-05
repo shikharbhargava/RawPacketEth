@@ -126,7 +126,7 @@ _Below is an example of how you can instruct your audience on installing and set
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+_For more examples, please refer to the [Documentation](/documentation/index.html)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -179,9 +179,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Shikhar Bhargava - [@shikharbhargava](https://twitter.com/shikharbhargava)
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Project Link: [https://github.com/shikharbhargava/repo_name](https://github.com/shikharbhargava/repo_name)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
