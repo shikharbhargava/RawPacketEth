@@ -1,4 +1,4 @@
-from scapy.all import Ether, Raw, IP, ARP, ICMP, TCP, UDP, srp, sendp, send
+from scapy.all import Ether, Raw, IP, ARP, ICMP, TCP, UDP, srp, sendp, send, conf
 from scapy.sendrecv import _send
 from scapy.utils import checksum
 from scapy.arch.windows import get_windows_if_list
@@ -11,6 +11,9 @@ import time
 import json
 import random
 import textwrap
+
+#conf.use_pcap = True
+conf.manufdb = "data/manuf"
 
 prog_name = 'raw-packet-eth'
 prog_version = '1.01'
@@ -84,13 +87,13 @@ class MyArgumentParser(ArgumentParser):
 def agruments():
     parser = MyArgumentParser(description='Sends raw packets on an interface.')
     parser.add_argument('-i', '--interface', metavar='INTERFACE-NAME', required=True, help='Output interface name')
-    parser.add_argument('-s','--src_mac', metavar='SRC-MAC', help='Source MAC Address. Optional, if not provided then mac address of the itherface will be used')
-    parser.add_argument('-d', '--dst_mac', metavar='DST-MAC', help='Sestination mac address')
+    parser.add_argument('-s','--src_mac', metavar='SRC-MAC-ADDRESS', help='Source MAC Address. Optional, if not provided then mac address of the itherface will be used')
+    parser.add_argument('-d', '--dst_mac', metavar='DST-MAC-ADDRESS', help='Sestination mac address')
     parser.add_argument('-e', '--ether_type', metavar='ETHER-TYPE', help='Ethernet type in hex, required')
-    parser.add_argument('-S', '--src_ip', metavar='SRC-IP', help='Source ipv4 address, required if ethernet type is 0x0800 (ipv4)')
-    parser.add_argument('-D', '--dst_ip', metavar='DST-IP', help='Destination ipv4 address, required if ethernet type is 0x0800 (ipv4)')
+    parser.add_argument('-S', '--src_ip', metavar='SRC-IP-ADDRESS', help='Source ipv4 address, required if ethernet type is 0x0800 (ipv4)')
+    parser.add_argument('-D', '--dst_ip', metavar='DST-IP-ADDRESS', help='Destination ipv4 address, required if ethernet type is 0x0800 (ipv4)')
     parser.add_argument('-P', '--ip_proto', type=int, metavar='IP-PROTO', help='IPv4 Protocol type, required if ethernet type is 0x0800 (ipv4)')
-    parser.add_argument('-p', '--payload', metavar='PAYLOAD-HEX-STREAM', help='{acket payload in hex stream')
+    parser.add_argument('-p', '--payload', metavar='PAYLOAD-HEX-STREAM', help='packet payload in hex stream')
     parser.add_argument('-f', '--payload_file', metavar='PAYLOAD-FILE', help='Packet payload file in hex stream')
     parser.add_argument('-c', '--packet_count', type=int, metavar='PACKET-COUNT', help='Number of packet to be sent [default=1]')
     parser.add_argument('-I', '--packet_interval', metavar='PACKET-INTERVAL', help='Time delay between 2 consecutive packets [default=1s, minimum=1ms, supported units={ms,s,m,h,d}]')
@@ -298,42 +301,42 @@ udp_port = 0
 udp_port_valid = False
 
 for opt, arg in vars(args).items():
-    if opt in ('arp') and arg is not None:
+    if opt == 'arp' and arg is not None:
         arp = arg
-    if opt in ('tcp_server') and arg is not None:
+    if opt == 'tcp_server' and arg is not None:
         tcp_port_str = arg
         tcp_server = True
         tcp_port_valid, tcp_port = validate_port(arg)
-    if opt in ('udp_server') and arg is not None:
+    if opt == 'udp_server' and arg is not None:
         udp_port_str = arg
         udp_server = True
         udp_port_valid, udp_port = validate_port(arg)
-    if opt in ('interface') and arg is not None:
+    if opt == 'interface' and arg is not None:
         interface = arg
-    if opt in ('src_mac') and arg is not None:
+    if opt == 'src_mac' and arg is not None:
         src_mac_valid, src_mac = validate_mac(arg)
-    if opt in ('dst_mac') and arg is not None:
+    if opt == 'dst_mac' and arg is not None:
         dst_mac_valid, dst_mac = validate_mac(arg)
-    if opt in ('ether_type') and arg is not None:
+    if opt == 'ether_type' and arg is not None:
         eth_str = arg
         eth_type_valid, eth_type = validate_ether_type(arg)
-    if opt in ('src_ip') and arg is not None:
+    if opt == 'src_ip' and arg is not None:
         src_ip_valid, src_ip = validate_ip(arg)
-    if opt in ('dst_ip') and arg is not None:
+    if opt == 'dst_ip' and arg is not None:
         dst_ip_valid, dst_ip = validate_ip(arg)
-    if opt in ('ip_proto') and arg is not None:
+    if opt == 'ip_proto' and arg is not None:
         ip_proto = arg
-    if opt in ('payload') and arg is not None:
+    if opt == 'payload' and arg is not None:
         payload_valid, payload_str = validate_payload(arg)
-    if opt in ('payload_file') and arg is not None:
+    if opt == 'payload_file' and arg is not None:
         payload_file = arg
         payload_file_valid, payload_valid, payload_str = validate_payload_paload_file(payload_file)
-    if opt in ('packet_count') and arg is not None:
+    if opt == 'packet_count' and arg is not None:
         count = arg
-    if opt in ('packet_interval') and arg is not None:
+    if opt == 'packet_interval' and arg is not None:
         interval_str = arg
         interval_valid , interval = validate_time(arg)
-    if opt in ('verbose') and arg is not None:
+    if opt == 'verbose' and arg is not None:
         verbose=arg
 
 if src_mac == '':
@@ -380,7 +383,7 @@ if not arp:
             parser.error(f'IPv4 protocol type is required for ether type {ipv4_eth_type_hex}')
 
     if payload_file != '' and not payload_file_valid:
-        print_error(f'Invalid payload file : {payload_file}', exit=True)
+        print_error(f'Invalid payload file  : {payload_file}', exit=True)
 
     if not payload_valid:
         print_error(f'Invalid payload hex stream: {payload_str}', exit=True)

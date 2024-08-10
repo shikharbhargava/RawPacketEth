@@ -12,7 +12,7 @@
   <h3 align="center">Raw Ethernet Packet Generator (Windows)</h3>
 
   <p align="center">
-    Raw Ethernet PAcket Generator is a CLI packet generator tool for ethernet on Windows 10/11. It allows you to create and send any possible packet or sequence of packets on the ethernet link. It is very simple to use, powerful and supports many adjustments of parameters while sending. 
+    Raw Ethernet Packet Generator is a CLI packet generator tool for ethernet on Windows 10/11. It allows you to create and send any possible packet or sequence of packets on the ethernet link. It is very simple to use, powerful and supports many adjustments of parameters while sending. 
     <br />
     <a href="https://github.com/shikharbhargava/raw-packet-eth-win"><strong>Explore the docs »</strong></a>
     <br />
@@ -60,16 +60,25 @@
 
 [![Product Name Screen Shot][product-screenshot]]("images/screenshot.png")
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+This utility can be used to generate raw Ethernet ([Ethernet II](https://en.wikipedia.org/wiki/Ethernet_frame#Ethernet_II)) frames on a specefied interface. Following are the ways to generate the packets:
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
+1. &emsp;Ethernet frame with specefied source mac address, destination mac address, [EtherType](https://en.wikipedia.org/wiki/EtherType) and payload byte stream.
+```ssh
+python raw-packet-eth.py -i INTERFACE-NAME -s SRC-MAC-ADDRESS -d DST-MAC-ADDRESS -e ETHER-TYPE -p PAYLOAD-HEX-STREAM
+```
+Example : [**GOOSE**](https://en.wikipedia.org/wiki/GOOSE) Packet (EtherType ***0x88b8***) from ***00-15-5D-93-03-30*** to ***00-15-5D-D6-7F-8A***
+```ssh
+python raw-packet-eth.py -i "Ethernet 1" -s 00-15-5D-93-03-30 -d 00-15-5D-D6-7F-8A -e 0x88b8 -p 0001008c00000000618181801742455353314346472f4c4c4e3024474f24424553535f31810207d0821e42455353314346472f4c4c4e3024424553535f6d6561737572656d656e748306424553535f31840863dc512ca51e64c485030297188601008701008801018901008a0103ab1c870680f901fbd71e870882ffffe801000000870882ffffe801000000
+```
+In the above example, if the source mac address of the specified interface is to be used source mac address can be sipped.
+```ssh
+python raw-packet-eth.py -i INTERFACE-NAME -d DST-MAC-ADDRESS -e ETHER-TYPE -p PAYLOAD-HEX-STREAM
+```
+Similarly, if the destination mac address is not known and the destination machine is IP-capable and supports ARP then destination IP address can also be provided.
+```ssh
+python raw-packet-eth.py -i INTERFACE-NAME -D DST-IP-ADDRESS -e ETHER-TYPE -p PAYLOAD-HEX-STREAM
+```
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `README.md` to get started.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -170,7 +179,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the MIT License. See [`MIT-License.txt`](MIT-License.txt) for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
