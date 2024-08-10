@@ -10,7 +10,7 @@
   <a href="https://github.com/shikharbhargava/raw-packet-eth-win">
     <img src="images/logo.svg" alt="Logo" width="100" height="100">
   </a>
-  <h3 align="center">Raw Ethernet Packet Generator (Windows)</h3>
+  <h3 align="center">Raw Ethernet Packet Generator</h3>
 
   <p align="center">
     Raw Ethernet Packet Generator is a CLI packet generator tool for ethernet on Windows 10/11. It allows you to create and send any possible packet or sequence of packets on the ethernet link. It is very simple to use, powerful and supports many adjustments of parameters while sending. 
@@ -145,13 +145,7 @@ _For more examples, please refer to the [Documentation](/documentation/index.htm
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
+***TBD***
 
 See the [open issues](https://github.com/shikharbhargava/raw-packet-eth-win/issues) for a full list of proposed features (and known issues).
 
@@ -194,25 +188,6 @@ Shikhar Bhargava - [![X][x-tweet-shield]][x-tweet-url]
 Project Link: [https://github.com/shikharbhargava/raw-packet-eth-win](https://github.com/shikharbhargava/raw-packet-eth-win)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
