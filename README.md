@@ -2,6 +2,7 @@
 
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
+[![X][x-shield]][x-url]
 <br />
 <br />
 <br />
@@ -190,7 +191,7 @@ Distributed under the MIT License. See [`MIT-License.txt`](MIT-License.txt) for 
 
 Shikhar Bhargava - [@shikharbhargava](https://twitter.com/shikharbhargava)
 
-Project Link: [https://github.com/shikharbhargava/repo_name](https://github.com/shikharbhargava/repo_name)
+Project Link: [https://github.com/shikharbhargava/raw-packet-eth-win](https://github.com/shikharbhargava/raw-packet-eth-win)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -228,6 +229,8 @@ Use this space to list resources you find helpful and would like to give credit 
 [license-url]: https://github.com/shikharbhargava/raw-packet-eth-win/blob/main/MIT-License.txt
 [linkedin-shield]: https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
 [linkedin-url]: https://linkedin.com/in/shikharbhargava
+[x-shield]: https://img.shields.io/twitter/follow/shikharbhargava?style=for-the-badge&logo=linkedin&logoColor=white
+[x-url]: https://x.com/shikharbhargava
 [product-screenshot]: images/screenshot.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
