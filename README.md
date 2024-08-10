@@ -225,7 +225,7 @@ Use this space to list resources you find helpful and would like to give credit 
 [issues-shield]: https://img.shields.io/github/issues/shikharbhargava/Best-README-Template.svg?style=for-the-badge
 [issues-url]: https://github.com/shikharbhargava/raw-packet-eth-win/issues
 [license-shield]: https://img.shields.io/github/license/shikharbhargava/raw-packet-eth-win?style=for-the-badge
-[license-url]: https://github.com/shikharbhargava/raw-packet-eth-win/MIT-LICENSE.txt
+[license-url]: https://github.com/shikharbhargava/raw-packet-eth-win/blob/main/MIT-License.txt
 [linkedin-shield]: https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
 [linkedin-url]: https://linkedin.com/in/shikharbhargava
 [product-screenshot]: images/screenshot.png
