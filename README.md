@@ -2,7 +2,7 @@
 
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
-[![X][x-shield]][x-url]
+[![X][x-follow-shield]][x-follow-url]
 <br />
 <br />
 <br />
@@ -59,7 +59,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]]("images/screenshot.png")
+[![Raw Ethernet Packet Generator Screen Shot][product-screenshot]]("images/screenshot.png")
 
 This utility can be used to generate raw Ethernet ([Ethernet II](https://en.wikipedia.org/wiki/Ethernet_frame#Ethernet_II)) frames on a specefied interface. Following are the ways to generate the packets:
 
@@ -89,7 +89,7 @@ python raw-packet-eth.py -i INTERFACE-NAME -D DST-IP-ADDRESS -e ETHER-TYPE -p PA
 
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
-* [![Python][Python]][Python-url]
+[![Python][Python]][Python-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -189,7 +189,7 @@ Distributed under the MIT License. See [`MIT-License.txt`](MIT-License.txt) for 
 <!-- CONTACT -->
 ## Contact
 
-Shikhar Bhargava - [@shikharbhargava](https://twitter.com/shikharbhargava)
+Shikhar Bhargava - [![X][x-tweet-shield]][x-tweet-url]
 
 Project Link: [https://github.com/shikharbhargava/raw-packet-eth-win](https://github.com/shikharbhargava/raw-packet-eth-win)
 
@@ -226,11 +226,13 @@ Use this space to list resources you find helpful and would like to give credit 
 [issues-shield]: https://img.shields.io/github/issues/shikharbhargava/Best-README-Template.svg?style=for-the-badge
 [issues-url]: https://github.com/shikharbhargava/raw-packet-eth-win/issues
 [license-shield]: https://img.shields.io/github/license/shikharbhargava/raw-packet-eth-win?style=for-the-badge
-[license-url]: https://github.com/shikharbhargava/raw-packet-eth-win/blob/main/MIT-License.txt
+[license-url]: MIT-License.txt
 [linkedin-shield]: https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
 [linkedin-url]: https://linkedin.com/in/shikharbhargava
-[x-shield]: https://img.shields.io/twitter/follow/shikharbhargava?style=for-the-badge&logo=linkedin&logoColor=white
-[x-url]: https://x.com/shikharbhargava
+[x-follow-shield]: https://img.shields.io/twitter/follow/shikharbhargava?style=for-the-badge
+[x-follow-url]: https://x.com/intent/follow?screen_name=shikharbhargava
+[x-tweet-shield]: https://img.shields.io/twitter/url?url=https%3A%2F%2Fx.com%2Fshikharbhargava&style=social&label=TWEET%20%40shikharbhargava
+[x-tweet-url]: https://x.com/intent/post?text=Wow%3A&url=https%3A%2F%2Fx.com%2Fshikharbhargava
 [product-screenshot]: images/screenshot.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
