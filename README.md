@@ -59,7 +59,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Raw Ethernet Packet Generator Screen Shot][product-screenshot]]("images/screenshot.png")
+[![Raw Ethernet Packet Generator Screen Shot][product-screenshot]](images/screenshot.png)
 
 This utility can be used to generate raw Ethernet ([Ethernet II](https://en.wikipedia.org/wiki/Ethernet_frame#Ethernet_II)) frames on a specefied interface. Following are the ways to generate the packets:
 
