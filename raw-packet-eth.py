@@ -77,9 +77,9 @@ class MyArgumentParser(ArgumentParser):
                         replace_str = replace_str + '\n' + next_line
                     message = message.replace(search, replace_str)
                 message = re.sub(options_regex, r'{}\1{}\6{}\7{}'.format(Fore.YELLOW, Style.RESET_ALL, Fore.GREEN, Style.RESET_ALL), message)
-                message = (f'{Fore.YELLOW}program{Style.RESET_ALL}:"
-                           " {Fore.CYAN}{prog_name} {Fore.YELLOW}version{Style.RESET_ALL}:"
-                           " {Fore.CYAN}{prog_version}{Style.RESET_ALL}\n\n{message}')
+                message = (f'{Fore.YELLOW}program{Style.RESET_ALL}:'
+                           ' {Fore.CYAN}{prog_name} {Fore.YELLOW}version{Style.RESET_ALL}:'
+                           ' {Fore.CYAN}{prog_version}{Style.RESET_ALL}\n\n{message}')
                 message = message.replace('usage', f'{Fore.YELLOW}usage{Style.RESET_ALL}')
                 message = message.replace('options', f'{Fore.YELLOW}options{Style.RESET_ALL}')
                 message = message.replace(self.prog, f'{Fore.CYAN}{self.prog}{Style.RESET_ALL}')
