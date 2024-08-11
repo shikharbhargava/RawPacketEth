@@ -264,7 +264,6 @@ def arp_scan(iface, ip, interval, count):
     for sent, received in result:
         return True, str(received.hwsrc)
     return False, ''
-    
 
 args, parser = agruments()
 
