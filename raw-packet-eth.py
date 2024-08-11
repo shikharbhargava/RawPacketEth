@@ -76,8 +76,10 @@ class MyArgumentParser(ArgumentParser):
                             next_line = next_line + '\n' + ' ' * colmn_size + new_replace_list[i]
                         replace_str = replace_str + '\n' + next_line
                     message = message.replace(search, replace_str)
-                message = re.sub(options_regex, r'{}\1{}\6{}\7{}'.format(Fore.YELLOW, Style.RESET_ALL, Fore.GREEN   , Style.RESET_ALL), message)
-                message = f'{Fore.YELLOW}program{Style.RESET_ALL}: {Fore.CYAN}{prog_name} {Fore.YELLOW}version{Style.RESET_ALL}: {Fore.CYAN}{prog_version}{Style.RESET_ALL}\n\n{message}'
+                message = re.sub(options_regex, r'{}\1{}\6{}\7{}'.format(Fore.YELLOW, Style.RESET_ALL, Fore.GREEN, Style.RESET_ALL), message)
+                message = (f'{Fore.YELLOW}program{Style.RESET_ALL}:"
+                           " {Fore.CYAN}{prog_name} {Fore.YELLOW}version{Style.RESET_ALL}:"
+                           " {Fore.CYAN}{prog_version}{Style.RESET_ALL}\n\n{message}')
                 message = message.replace('usage', f'{Fore.YELLOW}usage{Style.RESET_ALL}')
                 message = message.replace('options', f'{Fore.YELLOW}options{Style.RESET_ALL}')
                 message = message.replace(self.prog, f'{Fore.CYAN}{self.prog}{Style.RESET_ALL}')
@@ -87,7 +89,8 @@ class MyArgumentParser(ArgumentParser):
 def agruments():
     parser = MyArgumentParser(description='Sends raw packets on an interface.')
     parser.add_argument('-i', '--interface', metavar='INTERFACE-NAME', required=True, help='Output interface name')
-    parser.add_argument('-s','--src_mac', metavar='SRC-MAC-ADDRESS', help='Source MAC Address. Optional, if not provided then mac address of the itherface will be used')
+    parser.add_argument('-s','--src_mac', metavar='SRC-MAC-ADDRESS', help='Source MAC Address. Optional,'
+                                                                           ' if not provided then mac address of the itherface will be used')
     parser.add_argument('-d', '--dst_mac', metavar='DST-MAC-ADDRESS', help='Sestination mac address')
     parser.add_argument('-e', '--ether_type', metavar='ETHER-TYPE', help='Ethernet type in hex, required')
     parser.add_argument('-S', '--src_ip', metavar='SRC-IP-ADDRESS', help='Source ipv4 address, required if ethernet type is 0x0800 (ipv4)')
@@ -96,13 +99,14 @@ def agruments():
     parser.add_argument('-p', '--payload', metavar='PAYLOAD-HEX-STREAM', help='packet payload in hex stream')
     parser.add_argument('-f', '--payload_file', metavar='PAYLOAD-FILE', help='Packet payload file in hex stream')
     parser.add_argument('-c', '--packet_count', type=int, metavar='PACKET-COUNT', help='Number of packet to be sent [default=1]')
-    parser.add_argument('-I', '--packet_interval', metavar='PACKET-INTERVAL', help='Time delay between 2 consecutive packets [default=1s, minimum=1ms, supported units={ms,s,m,h,d}]')
+    parser.add_argument('-I', '--packet_interval', metavar='PACKET-INTERVAL', help='Time delay between 2 consecutive packets'
+                                                                                   ' [default=1s, minimum=1ms, supported units={ms,s,m,h,d}]')
     parser.add_argument('-t', '--tcp_server', metavar='PORT', help='Creates a TCP server')
     parser.add_argument('-u', '--udp_server', metavar='PORT', help='Creates a UDP server')
     parser.add_argument('-v', '--verbose', action='store_true', help='Show output log')
     parser.add_argument('-a', '--arp', action='store_true', help='Resolve mac address for an IPv4 address by sending ARP requests, use'
-                                                                ' -i option for selecting interface, -D option for destination address,'
-                                                                ' -c option for retry count and -I option for timeout time')
+                                                                 ' -i option for selecting interface, -D option for destination address,'
+                                                                 ' -c option for retry count and -I option for timeout time')
 
     args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
     return args, parser
