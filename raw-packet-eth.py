@@ -1,4 +1,6 @@
-from scapy.all import Ether, Raw, IP, ARP, ICMP, TCP, UDP, srp, sendp, send, conf
+from scapy.all import Raw, srp, sendp, send, conf
+from scapy.layers.l2 import Ether, ARP
+from scapy.layers.inet import IP, ICMP, TCP, UDP
 from scapy.sendrecv import _send
 from scapy.utils import checksum
 from scapy.arch.windows import get_windows_if_list
