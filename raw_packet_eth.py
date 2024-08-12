@@ -10,6 +10,7 @@ It is very simple to use, powerful and supports many adjustments of parameters w
 """
 
 import sys
+import os
 import re
 #import json
 import random
@@ -22,15 +23,21 @@ from scapy.sendrecv import _send
 from scapy.arch.windows import get_windows_if_list
 
 from utility.argparser import ParseArguments
-from utility.print import print_error, print_warning
+from utility.printfunc import print_error, print_warning
 
-IP_PROTO_ICMP = 1
-IP_PROTO_UDP = 17
-IP_PROTO_TCP = 6
-GOOSE_ETH_TYPE = 0x88b8  # GOOSE
-GOOSE_ETH_TYPE_HEX = hex(GOOSE_ETH_TYPE)
-IPV4_ETH_TYPE = 0x0800
-IPV4_ETH_TYPE_HEX = hex(IPV4_ETH_TYPE)
+VERSION = "1.0"
+
+# Known IP Protocols
+IP_PROTO_ICMP   = 0x01
+IP_PROTO_UDP    = 0x11
+IP_PROTO_TCP    = 0x06
+
+# Known EtherType
+IPV4_ETH_TYPE   = 0x0800
+GOOSE_ETH_TYPE  = 0x88b8
+# Known EtherType Hex String
+IPV4_ETH_TYPE_HEX_STR   = hex(IPV4_ETH_TYPE)
+GOOSE_ETH_TYPE_HEX_STR  = hex(GOOSE_ETH_TYPE)
 
 class PacketGenerator:
 
@@ -245,13 +252,13 @@ class PacketGenerator:
 
         if self._eth_type == IPV4_ETH_TYPE:
             if self._src_ip == '':
-                parser.error(f'Source IPv4 address is required for ether type {IPV4_ETH_TYPE_HEX}')
+                parser.error(f'Source IPv4 address is required for ether type {IPV4_ETH_TYPE_HEX_STR}')
             elif not self._src_ip_valid:
                 print_error(f'Invalid source address {self._src_ip}')
             elif self._src_mac == '' and self._ips is not None and self._src_ip not in self._ips:
                 print_warning(f'Source Address {self._src_ip} is not confgured on interface {self._interface}')
             if self._ip_proto == 0:
-                parser.error(f'IPv4 protocol type is required for ether type {IPV4_ETH_TYPE_HEX}')
+                parser.error(f'IPv4 protocol type is required for ether type {IPV4_ETH_TYPE_HEX_STR}')
 
         if self._payload_file != '' and not self._payload_file_valid:
             print_error(f'Invalid payload file  : {self._payload_file}', exit_prog=True)
@@ -320,7 +327,7 @@ class PacketGenerator:
             self.__validate_arp_arguments(parser)
 
     def __init__(self, arguments:list):
-        args, parser = ParseArguments(arguments)
+        args, parser = ParseArguments(arguments, os.path.splitext(sys.argv[0])[0], VERSION)
         self.__extract_validate_arguments(args, parser)
 
     def send_arp(self):

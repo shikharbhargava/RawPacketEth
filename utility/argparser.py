@@ -5,7 +5,7 @@ import textwrap
 
 from argparse import ArgumentParser
 from colorama import Fore, Style
-from print import print_error, print_warning
+from utility.printfunc import print_error, print_warning
 
 OPTIONS_REGEX = r'(((-){1,2}[a-z_]+)|((-){1,2}[A-Z]))([ \,\]])(([A-Z\-]+){0,1})'
 ALL_OPTIONS_REGEX = r'(((-){1}[a-z_]+)|((-){1,2}[A-Z]))([ \,])(([A-Z\-]+){0,1}), ((-){2}[a-z_]+)([ \,])(([A-Z\-]+){0,1})'
@@ -72,14 +72,14 @@ class ArgParser(ArgumentParser):
                 message = message.replace('options', f'{Fore.YELLOW}options{Style.RESET_ALL}')
                 message = message.replace(self.prog, f'{Fore.CYAN}{self.prog}{Style.RESET_ALL}')
             print(message)
-            
-    def __init__(self, program=os.path.splitext(sys.argv[0])[0], version="1.0", *args, **kwargs):
-        super(ArgumentParser, self).__init__(*args, **kwargs)
+
+    def __init__(self, program, version, **kargs):
+        super(ArgumentParser, self).__init__(**kargs)
         self.prog_name = program
         self.prog_version = version
 
-def ParseArguments(arguments:list):
-    parser = ArgParser(description='Sends raw packets on an interface.')
+def ParseArguments(arguments:list, program, version):
+    parser = ArgParser(program=program, version=version, description='Sends raw packets on an interface.')
     parser.add_argument('-i', '--interface', metavar='INTERFACE-NAME', required=True, help='Output interface name')
     parser.add_argument('-s','--src_mac', metavar='SRC-MAC-ADDRESS', help='Source MAC Address. Optional,'
                                                                            ' if not provided then mac address of the itherface will be used')
