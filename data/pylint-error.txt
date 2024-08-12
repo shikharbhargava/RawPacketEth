@@ -1,22 +1,10 @@
 ************* Module raw_packet_eth
-raw_packet_eth.py:40:0: C0116: Missing function or method docstring (missing-function-docstring)
-raw_packet_eth.py:65:0: C0116: Missing function or method docstring (missing-function-docstring)
-raw_packet_eth.py:67:0: C0116: Missing function or method docstring (missing-function-docstring)
-raw_packet_eth.py:69:0: C0116: Missing function or method docstring (missing-function-docstring)
-raw_packet_eth.py:72:0: C0115: Missing class docstring (missing-class-docstring)
-raw_packet_eth.py:187:4: R0913: Too many arguments (11/10) (too-many-arguments)
-raw_packet_eth.py:225:4: R0912: Too many branches (39/12) (too-many-branches)
-raw_packet_eth.py:225:4: R0915: Too many statements (102/50) (too-many-statements)
-raw_packet_eth.py:240:8: W0612: Unused variable 'tcp_port_str' (unused-variable)
-raw_packet_eth.py:241:8: W0612: Unused variable 'tcp_port_valid' (unused-variable)
-raw_packet_eth.py:242:8: W0612: Unused variable 'udp_port_str' (unused-variable)
-raw_packet_eth.py:243:8: W0612: Unused variable 'udp_port_valid' (unused-variable)
-raw_packet_eth.py:341:4: C0116: Missing function or method docstring (missing-function-docstring)
-raw_packet_eth.py:350:4: C0116: Missing function or method docstring (missing-function-docstring)
-raw_packet_eth.py:177:4: W0238: Unused private member `PacketGenerator.__tcp_checksum(self, tcp_packet: TCP)` (unused-private-member)
-raw_packet_eth.py:389:0: C0116: Missing function or method docstring (missing-function-docstring)
-raw_packet_eth.py:18:0: W0611: Unused sendp imported from scapy.all (unused-import)
+raw_packet_eth.py:35:0: C0115: Missing class docstring (missing-class-docstring)
+raw_packet_eth.py:326:4: C0116: Missing function or method docstring (missing-function-docstring)
+raw_packet_eth.py:337:4: C0116: Missing function or method docstring (missing-function-docstring)
+raw_packet_eth.py:164:4: W0238: Unused private member `PacketGenerator.__tcp_checksum(self, tcp_packet: TCP)` (unused-private-member)
+raw_packet_eth.py:376:0: C0116: Missing function or method docstring (missing-function-docstring)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.44/10 (previous run: 9.27/10, +0.17)
+Your code has been rated at 9.83/10 (previous run: 9.79/10, +0.03)
 

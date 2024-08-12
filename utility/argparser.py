@@ -72,6 +72,7 @@ class ArgParser(ArgumentParser):
                 message = message.replace('options', f'{Fore.YELLOW}options{Style.RESET_ALL}')
                 message = message.replace(self.prog, f'{Fore.CYAN}{self.prog}{Style.RESET_ALL}')
             print(message)
+            
     def __init__(self, program=os.path.splitext(sys.argv[0])[0], version="1.0", *args, **kwargs):
         super(ArgumentParser, self).__init__(*args, **kwargs)
         self.prog_name = program
