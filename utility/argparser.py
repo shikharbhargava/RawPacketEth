@@ -73,8 +73,8 @@ class ArgParser(ArgumentParser):
                 message = message.replace(self.prog, f'{Fore.CYAN}{self.prog}{Style.RESET_ALL}')
             print(message)
 
-    def __init__(self, program, version, **kargs):
-        super(ArgumentParser, self).__init__(**kargs)
+    def __init__(self, program, version, *args, **kargs):
+        super().__init__(*args, **kargs)
         self.prog_name = program
         self.prog_version = version
 

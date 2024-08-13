@@ -114,12 +114,12 @@ class PacketGenerator:
             return True, payload
         return False, payload
 
-    def __validate_payload_paload_file(self, payload_file):
+    def __validate_payload_paload_file(self):
         pay_str = ''
         pay_valid = False
         valid = False
         try:
-            with open(payload_file, 'r', encoding='UTF-8') as file:
+            with open(self._payload_file, 'r', encoding='UTF-8') as file:
                 data = file.read().replace('\n', '')
                 pay_valid, pay_str = self.__validate_payload(data)
                 valid = True
@@ -216,18 +216,18 @@ class PacketGenerator:
             return True, str(received.hwsrc)
         return False, ''
 
-    def __extract_dst_mac_from_dst_ip(self, dst_ip_valid):
-        if self._dst_mac == '' and dst_ip_valid:
+    def __extract_dst_mac_from_dst_ip(self):
+        if self._dst_mac == '' and self._dst_ip_valid:
             if self._dst_ip == self._src_ip:
                 self._dst_mac = self._src_mac
-                dst_mac_valid = True
+                self._dst_mac_valid = True
             else:
                 if self._verbose:
-                    print(f'Sending Arp to {self._dst_ip} using interface {self._interface}, timeout time=1s, retry count={self._count}')
-                dst_mac_valid, self._dst_mac = self.__arp_scan(self._interface, self._dst_ip, 1, self._count)
-            if dst_mac_valid and self._verbose:
+                    print(f'Sending Arp to {self._dst_ip} using interface {self._interface}, timeout time=1s, retry count={1}')
+                self._dst_mac_valid, self._dst_mac = self.__arp_scan(self._interface, self._dst_ip, 1, 1)
+            if self._dst_mac_valid and self._verbose:
                 print(f'Found mac address {self._dst_mac} for ip address {self._dst_ip}')
-            if not dst_mac_valid:
+            if not self._dst_mac_valid:
                 print_error(f'Could not find MAC address for {self._dst_ip}', exit_prog=True)
 
     def __validate_arp_arguments(self, parser):
@@ -240,7 +240,7 @@ class PacketGenerator:
         if self._dst_mac == '' and self._dst_ip == '':
             parser.error('At-least one of the destination MAC or IPv4 address is required.')
 
-        self.__extract_dst_mac_from_dst_ip(self._dst_ip_valid)
+        self.__extract_dst_mac_from_dst_ip()
 
         if self._dst_mac == '':
             print_error(f'Could not resolve MAC address for {self._dst_ip}', exit_prog=True)
@@ -297,8 +297,8 @@ class PacketGenerator:
             if opt == 'payload' and arg is not None:
                 self._payload_valid, self._payload_str = self.__validate_payload(arg)
             if opt == 'payload_file' and arg is not None:
-                payload_file = arg
-                self._payload_file_valid, self._payload_valid, self._payload_str = self.__validate_payload_paload_file(payload_file)
+                self._payload_file = arg
+                self._payload_file_valid, self._payload_valid, self._payload_str = self.__validate_payload_paload_file()
             if opt == 'packet_count' and arg is not None:
                 self._count = arg
             if opt == 'packet_interval' and arg is not None:
