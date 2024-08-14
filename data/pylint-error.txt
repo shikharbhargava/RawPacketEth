@@ -1,6 +1,0 @@
-************* Module raw_packet_eth
-raw_packet_eth.py:174:4: W0238: Unused private member `PacketGenerator.__tcp_checksum(self, tcp_packet: TCP)` (unused-private-member)
-
-------------------------------------------------------------------
-Your code has been rated at 9.97/10 (previous run: 9.90/10, +0.07)
-
