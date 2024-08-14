@@ -1,3 +1,13 @@
+# MIT License
+# This file is part of Raw Ethernet Packet Generator
+# See https://github.com/shikharbhargava/raw-packet-eth-win for more information
+# Copyright (C) Shikhar Bhargava
+
+"""
+This file contains the custom implementation of ArgumentParser and
+also adds the command line arguments implementation
+"""
+
 import os
 import re
 import sys
@@ -5,7 +15,7 @@ import textwrap
 
 from argparse import ArgumentParser
 from colorama import Fore, Style
-from utility.printfunc import print_error, print_warning
+from utility.printfunc import print_error
 
 OPTIONS_REGEX = r'(((-){1,2}[a-z_]+)|((-){1,2}[A-Z]))([ \,\]])(([A-Z\-]+){0,1})'
 ALL_OPTIONS_REGEX = r'(((-){1}[a-z_]+)|((-){1,2}[A-Z]))([ \,])(([A-Z\-]+){0,1}), ((-){2}[a-z_]+)([ \,])(([A-Z\-]+){0,1})'
@@ -13,6 +23,9 @@ TAB_CORRECTION_REGEX = r'(.+)([a-zA-Z])([\n]*   +)(.+)'
 USEAGE_REGEX = r'(usage:.+)((\n)( +)(.+))+'
 
 class ArgParser(ArgumentParser):
+    """
+    This is the custom implementation of ArgumentParser
+    """
 
     prog_name = os.path.splitext(sys.argv[0])[0]
     prog_version = '1.0'
@@ -48,8 +61,7 @@ class ArgParser(ArgumentParser):
                 max_size = 0
                 for r in results:
                     s = len(''.join(r[0:2]))
-                    if s > max_size:
-                        max_size = s
+                    max_size = max(s , max_size)
                 colmn_size = (int(max_size/4) + 1) * 4
                 for r in results:
                     first = ''.join(r[0:2])
@@ -78,7 +90,10 @@ class ArgParser(ArgumentParser):
         self.prog_name = program
         self.prog_version = version
 
-def ParseArguments(arguments:list, program, version):
+def parse_arguments(arguments:list, program, version):
+    """
+    Creates and parses the command line arguments
+    """
     parser = ArgParser(program=program, version=version, description='Sends raw packets on an interface.')
     parser.add_argument('-i', '--interface', metavar='INTERFACE-NAME', required=True, help='Output interface name')
     parser.add_argument('-s','--src_mac', metavar='SRC-MAC-ADDRESS', help='Source MAC Address. Optional,'

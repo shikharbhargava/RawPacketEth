@@ -22,7 +22,7 @@ from scapy.layers.inet import IP, ICMP, TCP, UDP
 from scapy.sendrecv import _send
 from scapy.arch.windows import get_windows_if_list
 
-from utility.argparser import ParseArguments
+from utility.argparser import parse_arguments
 from utility.printfunc import print_error, print_warning
 
 VERSION = "1.0"
@@ -330,7 +330,7 @@ class PacketGenerator:
             self.__validate_arp_arguments(parser)
 
     def __init__(self, arguments:list):
-        args, parser = ParseArguments(arguments, os.path.splitext(sys.argv[0])[0], VERSION)
+        args, parser = parse_arguments(arguments, os.path.splitext(sys.argv[0])[0], VERSION)
         self.__extract_validate_arguments(args, parser)
 
     def send_arp(self):
