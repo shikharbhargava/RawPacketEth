@@ -13,7 +13,7 @@ TAB_CORRECTION_REGEX = r'(.+)([a-zA-Z])([\n]*   +)(.+)'
 USEAGE_REGEX = r'(usage:.+)((\n)( +)(.+))+'
 
 class ArgParser(ArgumentParser):
-    
+
     prog_name = os.path.splitext(sys.argv[0])[0]
     prog_version = '1.0'
 

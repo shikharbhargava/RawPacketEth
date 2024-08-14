@@ -1,0 +1,13 @@
+************* Module argparser
+utility\argparser.py:16:0: C0303: Trailing whitespace (trailing-whitespace)
+utility\argparser.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+utility\argparser.py:8:0: E0401: Unable to import 'utility.printfunc' (import-error)
+utility\argparser.py:15:0: C0115: Missing class docstring (missing-class-docstring)
+utility\argparser.py:51:20: R1731: Consider using 'max_size = max(max_size, s)' instead of unnecessary if block (consider-using-max-builtin)
+utility\argparser.py:81:0: C0116: Missing function or method docstring (missing-function-docstring)
+utility\argparser.py:81:0: C0103: Function name "ParseArguments" doesn't conform to snake_case naming style (invalid-name)
+utility\argparser.py:8:0: W0611: Unused print_warning imported from utility.printfunc (unused-import)
+
+-----------------------------------
+Your code has been rated at 8.60/10
+

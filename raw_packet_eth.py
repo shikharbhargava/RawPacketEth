@@ -40,6 +40,9 @@ IPV4_ETH_TYPE_HEX_STR   = hex(IPV4_ETH_TYPE)
 GOOSE_ETH_TYPE_HEX_STR  = hex(GOOSE_ETH_TYPE)
 
 class PacketGenerator:
+    """
+    PacketGenerator class parse and validates the parameters, also generates ethernet packets.
+    """
 
     _IP_REGEX = r'^(?:(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$'
     _MAC_REGEX = r'^((([0-9A-Fa-f]{2}[:]){5})|(([0-9A-Fa-f]{2}[-]){5}))([0-9A-Fa-f]{2})$'
@@ -331,6 +334,9 @@ class PacketGenerator:
         self.__extract_validate_arguments(args, parser)
 
     def send_arp(self):
+        """
+        sends preconfigures arp packet
+        """
         if self._arp:
             print(f'Sending Arp to {self._dst_ip} using interface {self._interface},'
                   f' timeout time={self._interval/1000}s,'
@@ -342,6 +348,9 @@ class PacketGenerator:
                 print(f'Could not find mac address for ip address {self._dst_ip}')
 
     def send_packet(self):
+        """
+        sends preconfigures ethernet packets (also send ARP packet if it is configured)
+        """
         if self._arp:
             self.send_arp()
             return
@@ -379,8 +388,10 @@ class PacketGenerator:
                                       self._interval,
                                       self._verbose)
 
-
 def main():
+    """
+    Main function, Initializes PacketGenerator  and sends configured packet
+    """
     gen = PacketGenerator(sys.argv)
     gen.send_packet()
 

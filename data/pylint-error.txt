@@ -1,10 +1,6 @@
 ************* Module raw_packet_eth
-raw_packet_eth.py:35:0: C0115: Missing class docstring (missing-class-docstring)
-raw_packet_eth.py:326:4: C0116: Missing function or method docstring (missing-function-docstring)
-raw_packet_eth.py:337:4: C0116: Missing function or method docstring (missing-function-docstring)
-raw_packet_eth.py:164:4: W0238: Unused private member `PacketGenerator.__tcp_checksum(self, tcp_packet: TCP)` (unused-private-member)
-raw_packet_eth.py:376:0: C0116: Missing function or method docstring (missing-function-docstring)
+raw_packet_eth.py:174:4: W0238: Unused private member `PacketGenerator.__tcp_checksum(self, tcp_packet: TCP)` (unused-private-member)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.83/10 (previous run: 9.79/10, +0.03)
+Your code has been rated at 9.97/10 (previous run: 9.90/10, +0.07)
 
