@@ -8,6 +8,7 @@ server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 sockets = [server_socket]
 
 def signal_handler(sig, frame):
+    print(f'{sig}:{type(frame)}')
     print('You pressed Ctrl+C!')
     for s in sockets:
         if s is not server_socket:
@@ -46,4 +47,8 @@ def tcp_server(address:str = "0.0.0.0", port:int = 9999):
 
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
+    signal.signal(signal.SIGILL, signal_handler)
+    signal.signal(signal.SIGABRT, signal_handler)
+    signal.signal(signal.SIGSEGV, signal_handler)
     tcp_server()
