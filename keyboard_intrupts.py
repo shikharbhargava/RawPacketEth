@@ -1,16 +1,23 @@
-from multiprocessing import Process
+import os
+
 import keyboard
-import time
 
-def my_loop():
-    while True:
-        print("a")
-        time.sleep(0.3)
+def clear_screen():
+    # For Windows
+    if os.name == 'nt':
+        os.system('cls')
+    # For macOS and Linux
+    else:
+        os.system('clear')
+def on_key_event(event):
+    print(f"Key {event.name} pressed")
+    #clear_screen()
+    print("Press a key..")
 
-if __name__ == '__main__':
-    process = Process(target=my_loop)
-    process.start()
-    while process.is_alive():
-        if keyboard.is_pressed('q'):
-            process.terminate()
-            break   
+# Set up the listener
+keyboard.on_release(on_key_event)
+
+print("Press a key..")
+
+# Keep the script running
+keyboard.wait('esc')  # Press 'esc' to exit

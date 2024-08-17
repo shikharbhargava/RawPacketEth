@@ -7,7 +7,9 @@
 This file contains implementation of functions to print error and warinings in color format
 """
 
+import os
 import sys
+
 from colorama import Fore, Style
 
 def print_error(*err : str, exit_prog=False):
@@ -23,3 +25,11 @@ def print_warning(*err : str):
     Prints the warining statement in YELLOW color
     """
     print(Fore.YELLOW + 'WARNING: ' + ' '.join(err) + Style.RESET_ALL, file=sys.stderr)
+
+def clear_screen():
+    # For Windows
+    if os.name == 'nt':
+        os.system('cls')
+    # For macOS and Linux
+    else:
+        os.system('clear')
