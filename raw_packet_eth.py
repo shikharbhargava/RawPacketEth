@@ -9,7 +9,7 @@ It allows you to create and send any possible packet or sequence of packets on t
 It is very simple to use, powerful and supports many adjustments of parameters while sending.
 """
 
-import os, sys, signal
+import os, sys
 import threading
 import time
 
