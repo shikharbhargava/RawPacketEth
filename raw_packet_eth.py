@@ -25,6 +25,7 @@ def main():
     """
     Main function, Initializes PacketGenerator  and sends configured packet
     """
+    default_string = 'Press a key to choose an option from the bottom menu.'
 
     def clear_screen():
         os.system('clear')
@@ -45,6 +46,7 @@ def main():
             nonlocal esc
             nonlocal gen
             nonlocal keyboard
+            nonlocal default_string
             focus_process = win32process.GetWindowThreadProcessId(win32gui.GetForegroundWindow())
             if focus_process != initial_focus_process:
                 return False
@@ -56,20 +58,22 @@ def main():
                     esc = True
                     return False
                 if c in ('n', 'N'):
-                    print('Press a key from the menu below...')
+                    print(default_string)
                     return True
                 print("Invalid input!")
-                print('Press a key from the menu below...')
+                print(default_string)
                 return True
             if str(key) == "'g'":
-                print('Generating Packet...')
-                print('Press a key from the menu below...')
+                print('Generating Packet(s)...')
                 gen.send_packet()
+                print(default_string)
             elif str(key) == "'c'":
                 clear_screen()
-                print('Press a key from the menu below...')
+                print(default_string)
             elif str(key) == "'s'":
+                print('Configurations...')
                 print(gen)
+                print(default_string)
             #else:
             #    print(f'Unknown option: {str(key)}')
             return True
@@ -85,7 +89,7 @@ def main():
 
     gen = PacketGenerator(sys.argv)
     clear_screen()
-    print('Press a key from the menu below...')
+    print(default_string)
     bb.add('Generate Packet', label='g')
     bb.add('show configurations', label='s')
     bb.add('clear', label='c')
