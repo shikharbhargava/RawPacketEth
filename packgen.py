@@ -10,8 +10,9 @@ Implementation of class PacketGenerator
 import sys
 import os
 import re
-#import json
+import json
 import random
+import textwrap
 
 from scapy.all import Raw, srp, send
 #from scapy.all import sendp
@@ -48,22 +49,23 @@ class PacketGenerator:
     _HEX_ETHER_TYPE_REGEX = r'^(0x){0,1}[0-9A-Fa-f]{1,4}$'
     _TIME_REGEX = r'^([0-9]+|[0-9]+\.[0-9]+|\.[0-9]+)(ms|s|m|h|d)$'
 
-    _interface = ''
-    _src_mac = ''
-    _dst_mac = ''
-    _src_ip = ''
-    _dst_ip = ''
-    _eth_type = IPV4_ETH_TYPE
-    _ip_proto = 0
-    _count = 1
-    _interval = 1
-    _verbose=False
-    _arp = False
-    _tcp_server = False
-    _tcp_port = 0
-    _udp_server = False
-    _udp_port = 0
-    _payload = bytes()
+    __interface_name = ''
+    __source_mac_address = ''
+    __destination_mac_address = ''
+    __source_ip_address = ''
+    __destination_ip_address = ''
+    __ether_type = IPV4_ETH_TYPE
+    __ip_protocol = 0
+    __count = 1
+    __interval = 1
+    __arp = False
+    __tcp_server = False
+    __tcp_port = 0
+    __udp_server = False
+    __udp_port = 0
+    __payload = bytes()
+    __payload_file = ''
+    __verbose=False
 
     _src_mac_valid = False
     _dst_mac_valid = False
@@ -73,7 +75,6 @@ class PacketGenerator:
     _eth_type_valid = False
     _payload_str = ''
     _payload_valid = False
-    _payload_file = ''
     _payload_file_valid = False
     _interval_str = ''
     _interval_valid = True
@@ -120,7 +121,8 @@ class PacketGenerator:
         pay_valid = False
         valid = False
         try:
-            with open(self._payload_file, 'r', encoding='UTF-8') as file:
+            self.__payload_file = os.path.abspath(self.__payload_file)
+            with open(self.__payload_file, 'r', encoding='UTF-8') as file:
                 data = file.read().replace('\n', '')
                 pay_valid, pay_str = self.__validate_payload(data)
                 valid = True
@@ -218,51 +220,51 @@ class PacketGenerator:
         return False, ''
 
     def __extract_dst_mac_from_dst_ip(self):
-        if self._dst_mac == '' and self._dst_ip_valid:
-            if self._dst_ip == self._src_ip:
-                self._dst_mac = self._src_mac
+        if self.__destination_mac_address == '' and self._dst_ip_valid:
+            if self.__destination_ip_address == self.__source_ip_address:
+                self.__destination_mac_address = self.__source_mac_address
                 self._dst_mac_valid = True
             else:
-                if self._verbose:
-                    print(f'Sending Arp to {self._dst_ip} using interface {self._interface}, timeout time=1s, retry count={1}')
-                self._dst_mac_valid, self._dst_mac = self.__arp_scan(self._interface, self._dst_ip, 1, 1)
-            if self._dst_mac_valid and self._verbose:
-                print(f'Found mac address {self._dst_mac} for ip address {self._dst_ip}')
+                if self.__verbose:
+                    print(f'Sending Arp to {self.__destination_ip_address} using interface {self.__interface_name}, timeout time=1s, retry count={1}')
+                self._dst_mac_valid, self.__destination_mac_address = self.__arp_scan(self.__interface_name, self.__destination_ip_address, 1, 1)
+            if self._dst_mac_valid and self.__verbose:
+                print(f'Found mac address {self.__destination_mac_address} for ip address {self.__destination_ip_address}')
             if not self._dst_mac_valid:
-                print_error(f'Could not find MAC address for {self._dst_ip}', exit_prog=True)
+                print_error(f'Could not find MAC address for {self.__destination_ip_address}', exit_prog=True)
 
     def __validate_arp_arguments(self, parser):
-        if self._dst_ip == '':
+        if self.__destination_ip_address == '':
             parser.error('For ARP request destination IP address is required.')
 
     def __validate_non_arp_arguments(self,
                                      parser):
 
-        if self._dst_mac == '' and self._dst_ip == '':
+        if self.__destination_mac_address == '' and self.__destination_ip_address == '':
             parser.error('At-least one of the destination MAC or IPv4 address is required.')
 
         self.__extract_dst_mac_from_dst_ip()
 
-        if self._dst_mac == '':
-            print_error(f'Could not resolve MAC address for {self._dst_ip}', exit_prog=True)
+        if self.__destination_mac_address == '':
+            print_error(f'Could not resolve MAC address for {self.__destination_ip_address}', exit_prog=True)
         if not self._dst_mac_valid:
-            print_error(f'Invalid Destination MAC address: {self._dst_mac}', exit_prog=True)
+            print_error(f'Invalid Destination MAC address: {self.__destination_mac_address}', exit_prog=True)
 
         if not self._eth_type_valid:
             print_error(f'Invalid ether type: {self._eth_type_str}', exit_prog=True)
 
-        if self._eth_type == IPV4_ETH_TYPE:
-            if self._src_ip == '':
+        if self.__ether_type == IPV4_ETH_TYPE:
+            if self.__source_ip_address == '':
                 parser.error(f'Source IPv4 address is required for ether type {IPV4_ETH_TYPE_HEX_STR}')
             elif not self._src_ip_valid:
-                print_error(f'Invalid source address {self._src_ip}')
-            elif self._src_mac == '' and self._ips is not None and self._src_ip not in self._ips:
-                print_warning(f'Source Address {self._src_ip} is not confgured on interface {self._interface}')
-            if self._ip_proto == 0:
+                print_error(f'Invalid source address {self.__source_ip_address}')
+            elif self.__source_mac_address == '' and self._ips is not None and self.__source_ip_address not in self._ips:
+                print_warning(f'Source Address {self.__source_ip_address} is not confgured on interface {self.__interface_name}')
+            if self.__ip_protocol == 0:
                 parser.error(f'IPv4 protocol type is required for ether type {IPV4_ETH_TYPE_HEX_STR}')
 
-        if self._payload_file != '' and not self._payload_file_valid:
-            print_error(f'Invalid payload file  : {self._payload_file}', exit_prog=True)
+        if self.__payload_file != '' and not self._payload_file_valid:
+            print_error(f'Invalid payload file  : {self.__payload_file}', exit_prog=True)
 
         if not self._payload_valid:
             print_error(f'Invalid payload hex stream: {self._payload_str}', exit_prog=True)
@@ -271,59 +273,59 @@ class PacketGenerator:
 
         for opt, arg in vars(args).items():
             if opt == 'arp' and arg is not None:
-                self._arp = arg
+                self.__arp = arg
             if opt == 'tcp_server' and arg is not None:
                 self._tcp_port_str = arg
-                self._tcp_server = True
-                self._tcp_port_valid, self._tcp_port = self.__validate_port(arg)
+                self.__tcp_server = True
+                self._tcp_port_valid, self.__tcp_port = self.__validate_port(arg)
             if opt == 'udp_server' and arg is not None:
                 self._udp_port_str = arg
-                self._udp_server = True
-                self._udp_port_valid, self._udp_port = self.__validate_port(arg)
+                self.__udp_server = True
+                self._udp_port_valid, self.__udp_port = self.__validate_port(arg)
             if opt == 'interface' and arg is not None:
-                self._interface = arg
+                self.__interface_name = arg
             if opt == 'src_mac' and arg is not None:
-                self._src_mac_valid, self._src_mac = self.__validate_mac(arg)
+                self._src_mac_valid, self.__source_mac_address = self.__validate_mac(arg)
             if opt == 'dst_mac' and arg is not None:
-                self._dst_mac_valid, self._dst_mac = self.__validate_mac(arg)
+                self._dst_mac_valid, self.__destination_mac_address = self.__validate_mac(arg)
             if opt == 'ether_type' and arg is not None:
                 self._eth_type_str = arg
-                self._eth_type_valid, self._eth_type = self.__validate_ether_type(arg)
+                self._eth_type_valid, self.__ether_type = self.__validate_ether_type(arg)
             if opt == 'src_ip' and arg is not None:
-                self._src_ip_valid, self._src_ip = self.__validate_ip(arg)
+                self._src_ip_valid, self.__source_ip_address = self.__validate_ip(arg)
             if opt == 'dst_ip' and arg is not None:
-                self._dst_ip_valid, self._dst_ip = self.__validate_ip(arg)
+                self._dst_ip_valid, self.__destination_ip_address = self.__validate_ip(arg)
             if opt == 'ip_proto' and arg is not None:
-                self._ip_proto = arg
+                self.__ip_protocol = arg
             if opt == 'payload' and arg is not None:
                 self._payload_valid, self._payload_str = self.__validate_payload(arg)
             if opt == 'payload_file' and arg is not None:
-                self._payload_file = arg
+                self.__payload_file = arg
                 self._payload_file_valid, self._payload_valid, self._payload_str = self.__validate_payload_paload_file()
             if opt == 'packet_count' and arg is not None:
-                self._count = arg
+                self.__count = arg
             if opt == 'packet_interval' and arg is not None:
                 self._interval_str = arg
-                self._interval_valid , self._interval = self.__validate_time(arg)
+                self._interval_valid , self.__interval = self.__validate_time(arg)
             if opt == 'verbose' and arg is not None:
-                self._verbose=arg
+                self.__verbose=arg
 
-        if self._src_mac == '':
-            self._src_mac, self._ips = self.__get_mac_address(self._interface)
-            if self._src_mac is None:
-                print_error(f'Invalid interface: {self._interface}', exit_prog=True)
+        if self.__source_mac_address == '':
+            self.__source_mac_address, self._ips = self.__get_mac_address(self.__interface_name)
+            if self.__source_mac_address is None:
+                print_error(f'Invalid interface: {self.__interface_name}', exit_prog=True)
             self._src_mac_valid = True
 
         if not self._src_mac_valid:
-            print_error(f'Invalid Source MAC address: {self._src_mac}', exit_prog=True)
+            print_error(f'Invalid Source MAC address: {self.__source_mac_address}', exit_prog=True)
 
         if self._interval_str != '' and not self._interval_valid:
             print_error(f'Invalid packet interval: {self._interval_str}', exit_prog=True)
 
-        if not self._arp:
+        if not self.__arp:
             self.__validate_non_arp_arguments(parser)
 
-            self._payload = bytes.fromhex(self._payload_str)
+            self.__payload = bytes.fromhex(self._payload_str)
         else:
             self.__validate_arp_arguments(parser)
 
@@ -331,57 +333,96 @@ class PacketGenerator:
         args, parser = parse_arguments(arguments, os.path.splitext(sys.argv[0])[0], VERSION)
         self.__extract_validate_arguments(args, parser)
 
+    def __repr__(self):
+        return self.__str__(self)
+
+    def __str__(self):
+        attr = list()
+        first = 30
+        second = 75
+        s_first = 52
+        s_second = 30
+        attr.append("{:<{}} {:<{}}".format("Name", first, "Value", second))
+        attr.append("{:<{}}-{:<{}}".format("-"*first, first, "-"*second, second))
+        start = f'_{type(self).__name__}__'
+        #attr_dict = dict(sorted(self.__dict__.items()))
+        attr_dict = self.__dict__
+        for n in attr_dict:
+            if n.startswith(start):
+                name = re.sub(rf'^{start}', '', n)
+                name = re.sub('_', ' ', name)
+                name = name.upper()
+                value = attr_dict[n]
+                if (name == "ETHER TYPE"):
+                    value = hex(value)
+                if (type(value) != type(bytes())):
+                    attr.append("{:<{}} {:<{}}".format(name, first, str(value), second))
+                else:
+                    l = textwrap.fill(value.hex(), 32).split('\n')
+                    for i, s in enumerate(l):
+                        b = bytes.fromhex(s)
+                        a = b.decode(encoding='utf-8', errors='replace')
+                        s = ' '.join(s[i:i+2] for i in range(0, len(s), 2))
+                        s = ' '.join(s[i:i+24] for i in range(0, len(s), 24))
+                        a = ''.join( u'\xb7' if ord(char) < 33 or ord(char) > 126 else char for char in a)
+                        a = ' '.join(a[i:i+8] for i in range(0, len(a), 8))
+                        if i == 0:
+                            attr.append("{:<{}} {:04x}  {:<{}}{:<{}}".format(name, first, (i * 16), s, s_first, a, s_second))
+                        else:
+                            attr.append("{:<{}} {:04x}  {:<{}}{:<{}}".format("", first, (i * 16), s, s_first, a, s_second))
+        return '\n'.join(attr)
+
     def send_arp(self):
         """
         sends preconfigures arp packet
         """
-        if self._arp:
-            print(f'Sending Arp to {self._dst_ip} using interface {self._interface},'
-                  f' timeout time={self._interval/1000}s,'
-                  f' retry count={self._count}')
-            found, mac = self.__arp_scan(self._interface, self._dst_ip, self._interval/1000, self._count)
+        if self.__arp:
+            print(f'Sending Arp to {self.__destination_ip_address} using interface {self.__interface_name},'
+                  f' timeout time={self.__interval/1000}s,'
+                  f' retry count={self.__count}')
+            found, mac = self.__arp_scan(self.__interface_name, self.__destination_ip_address, self.__interval/1000, self.__count)
             if found:
-                print(f'Found mac address {mac} for ip address {self._dst_ip}')
+                print(f'Found mac address {mac} for ip address {self.__destination_ip_address}')
             else:
-                print(f'Could not find mac address for ip address {self._dst_ip}')
+                print(f'Could not find mac address for ip address {self.__destination_ip_address}')
 
     def send_packet(self):
         """
         sends preconfigures ethernet packets (also send ARP packet if it is configured)
         """
-        if self._arp:
+        if self.__arp:
             self.send_arp()
             return
 
-        if self._eth_type == IPV4_ETH_TYPE:
-            if self._ip_proto == IP_PROTO_TCP:
+        if self.__ether_type == IPV4_ETH_TYPE:
+            if self.__ip_protocol == IP_PROTO_TCP:
                 print_error('TCP packet not yet supported.')
                 return
-            if self._src_ip == self._dst_ip:
-                self.__send_ip_packet(self._src_ip,
-                                    self._dst_ip,
-                                    self._ip_proto,
-                                    self._payload,
-                                    self._count,
-                                    self._interval,
-                                    self._verbose)
+            if self.__source_ip_address == self.__destination_ip_address:
+                self.__send_ip_packet(self.__source_ip_address,
+                                    self.__destination_ip_address,
+                                    self.__ip_protocol,
+                                    self.__payload,
+                                    self.__count,
+                                    self.__interval,
+                                    self.__verbose)
             else:
-                self.__send_ethernet_packet_ip(self._src_mac,
-                                             self._dst_mac,
-                                             self._src_ip,
-                                             self._dst_ip,
-                                             self._ip_proto,
-                                             self._payload,
-                                             self._interface,
-                                             self._count,
-                                             self._interval,
-                                             self._verbose)
+                self.__send_ethernet_packet_ip(self.__source_mac_address,
+                                             self.__destination_mac_address,
+                                             self.__source_ip_address,
+                                             self.__destination_ip_address,
+                                             self.__ip_protocol,
+                                             self.__payload,
+                                             self.__interface_name,
+                                             self.__count,
+                                             self.__interval,
+                                             self.__verbose)
         else:
-            self.__send_ethernet_packet(self._src_mac,
-                                      self._dst_mac,
-                                      self._eth_type,
-                                      self._payload,
-                                      self._interface,
-                                      self._count,
-                                      self._interval,
-                                      self._verbose)
+            self.__send_ethernet_packet(self.__source_mac_address,
+                                      self.__destination_mac_address,
+                                      self.__ether_type,
+                                      self.__payload,
+                                      self.__interface_name,
+                                      self.__count,
+                                      self.__interval,
+                                      self.__verbose)
