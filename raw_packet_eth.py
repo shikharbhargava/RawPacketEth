@@ -1,3 +1,14 @@
+# MIT License
+# This file is part of Raw Ethernet Packet Generator
+# See https://github.com/shikharbhargava/raw-packet-eth-win for more information
+# Copyright (C) Shikhar Bhargava
+
+"""
+Raw Ethernet Packet Generator is a CLI packet generator tool for ethernet on Windows 10/11.
+It allows you to create and send any possible packet or sequence of packets on the ethernet link.
+It is very simple to use, powerful and supports many adjustments of parameters while sending.
+"""
+
 import os, sys
 import threading
 import time
@@ -6,7 +17,7 @@ import bottombar as bb
 
 from pynput.keyboard import Key, Listener, KeyCode
 import win32gui, win32process
-from packetgenerator import PacketGenerator
+from packgen import PacketGenerator
 
 def main():
     """

@@ -4,9 +4,7 @@
 # Copyright (C) Shikhar Bhargava
 
 """
-Raw Ethernet Packet Generator is a CLI packet generator tool for ethernet on Windows 10/11.
-It allows you to create and send any possible packet or sequence of packets on the ethernet link.
-It is very simple to use, powerful and supports many adjustments of parameters while sending.
+Implementation of class PacketGenerator
 """
 
 import sys
