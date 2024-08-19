@@ -10,7 +10,7 @@ Implementation of class PacketGenerator
 import sys
 import os
 import re
-import json
+#import json
 import random
 import textwrap
 
@@ -226,7 +226,9 @@ class PacketGenerator:
                 self._dst_mac_valid = True
             else:
                 if self.__verbose:
-                    print(f'Sending Arp to {self.__destination_ip_address} using interface {self.__interface_name}, timeout time=1s, retry count={1}')
+                    print(f'Sending Arp to {self.__destination_ip_address}'
+                          ' using interface {self.__interface_name},'
+                          ' timeout time=1s, retry count={1}')
                 self._dst_mac_valid, self.__destination_mac_address = self.__arp_scan(self.__interface_name, self.__destination_ip_address, 1, 1)
             if self._dst_mac_valid and self.__verbose:
                 print(f'Found mac address {self.__destination_mac_address} for ip address {self.__destination_ip_address}')
@@ -334,29 +336,28 @@ class PacketGenerator:
         self.__extract_validate_arguments(args, parser)
 
     def __repr__(self):
-        return self.__str__(self)
+        return self.__str__()
 
     def __str__(self):
-        attr = list()
+        attr = []
         first = 30
         second = 75
         s_first = 52
         s_second = 30
-        attr.append("{:<{}} {:<{}}".format("Name", first, "Value", second))
-        attr.append("{:<{}}-{:<{}}".format("-"*first, first, "-"*second, second))
+        attr.append(f'{"Name":<{first}} {"Value":<{second}}')
+        attr.append(f'{"-"*first:<{first}}-{"-"*second:<{second}}')
         start = f'_{type(self).__name__}__'
         #attr_dict = dict(sorted(self.__dict__.items()))
         attr_dict = self.__dict__
-        for n in attr_dict:
+        for n, value in attr_dict.items():
             if n.startswith(start):
                 name = re.sub(rf'^{start}', '', n)
                 name = re.sub('_', ' ', name)
                 name = name.upper()
-                value = attr_dict[n]
-                if (name == "ETHER TYPE"):
+                if name == "ETHER TYPE":
                     value = hex(value)
-                if (type(value) != type(bytes())):
-                    attr.append("{:<{}} {:<{}}".format(name, first, str(value), second))
+                if not isinstance(value, bytes):
+                    attr.append(f'{name:<{first}} {str(value):<{second}}')
                 else:
                     l = textwrap.fill(value.hex(), 32).split('\n')
                     for i, s in enumerate(l):
@@ -364,12 +365,12 @@ class PacketGenerator:
                         a = b.decode(encoding='utf-8', errors='replace')
                         s = ' '.join(s[i:i+2] for i in range(0, len(s), 2))
                         s = ' '.join(s[i:i+24] for i in range(0, len(s), 24))
-                        a = ''.join( u'\xb7' if ord(char) < 33 or ord(char) > 126 else char for char in a)
+                        a = ''.join('\xb7' if ord(char) < 33 or ord(char) > 126 else char for char in a)
                         a = ' '.join(a[i:i+8] for i in range(0, len(a), 8))
                         if i == 0:
-                            attr.append("{:<{}} {:04x}  {:<{}}{:<{}}".format(name, first, (i * 16), s, s_first, a, s_second))
+                            attr.append(f'{name:<{first}} {(i * 16):04x}  {s:<{s_first}}{a:<{s_second}}')
                         else:
-                            attr.append("{:<{}} {:04x}  {:<{}}{:<{}}".format("", first, (i * 16), s, s_first, a, s_second))
+                            attr.append(f'{"":<{first}} {(i * 16):04x}  {s:<{s_first}}{a:<{s_second}}')
         return '\n'.join(attr)
 
     def send_arp(self):
