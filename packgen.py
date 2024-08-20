@@ -354,8 +354,22 @@ class PacketGenerator:
                 name = re.sub(rf'^{start}', '', n)
                 name = re.sub('_', ' ', name)
                 name = name.upper()
+                if name == "ARP" and not self.__arp:
+                    continue
                 if name == "ETHER TYPE":
+                    name = name + ' (hex)'
                     value = hex(value)
+                if name == "INTERVAL":
+                    if  not self.__arp:
+                        name = name + ' (ms)'
+                    else:
+                        name = 'TIMEOUT TIME (ms)'
+                if name == "COUNT" and self.__arp:
+                    name = 'RETRY COUNT'
+                if name == "PAYLOAD":
+                    name = name + ' (hex | ascii)'
+                if isinstance(value, bool):
+                    name = name + ' (True if configured)'
                 if not isinstance(value, bytes):
                     attr.append(f'{name:<{first}} {str(value):<{second}}')
                 else:
