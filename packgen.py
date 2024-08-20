@@ -342,6 +342,8 @@ class PacketGenerator:
         attr = []
         first = 30
         second = 75
+        if self.__arp:
+            second = 30
         s_first = 52
         s_second = 30
         attr.append(f'{"Name":<{first}} {"Value":<{second}}')
