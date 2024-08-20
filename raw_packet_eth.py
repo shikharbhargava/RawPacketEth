@@ -105,7 +105,7 @@ def main():
     listener_thread = threading.Thread(target=lambda: start_listener(gen))
     listener_thread.start()
     listener_thread.join()
-    #clear_screen()
+    clear_screen()
 
 if __name__=="__main__":
     main()
