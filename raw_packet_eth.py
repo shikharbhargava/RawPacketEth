@@ -66,16 +66,19 @@ def main():
                 print("Invalid input!")
                 print(default_string)
                 return True
-            if str(key) == "'g'":
+            if str(key) in ("'g'", "'G'"):
                 print('Generating Packet(s)...')
                 gen.send_packet()
                 print(default_string)
-            elif str(key) == "'c'":
+            elif str(key) in ("'c'", "'C'"):
                 clear_screen()
                 print(default_string)
-            elif str(key) == "'s'":
+            elif str(key) in ("'s'", "'S'"):
                 print('Configurations...')
                 print(gen)
+                print(default_string)
+            elif str(key) in ("'m'", "'M'"):
+                gen.help()
                 print(default_string)
             #else:
             #    print(f'Unknown option: {str(key)}')
@@ -98,6 +101,7 @@ def main():
     bb.add('clear', label='c')
     bb.add(Clock(), label='time', right=True, refresh=1)
     bb.add('to quit', label='esc or q', right=True)
+    bb.add('man', label='m', right=True)
     listener_thread = threading.Thread(target=lambda: start_listener(gen))
     listener_thread.start()
     listener_thread.join()

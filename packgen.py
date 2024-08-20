@@ -21,7 +21,7 @@ from scapy.layers.inet import IP, ICMP, TCP, UDP
 from scapy.sendrecv import _send
 from scapy.arch.windows import get_windows_if_list
 
-from utility.argparser import parse_arguments
+from utility.argparser import parse_arguments, ArgParser
 from utility.printfunc import print_error, print_warning
 
 VERSION = "1.0"
@@ -42,6 +42,7 @@ class PacketGenerator:
     """
     PacketGenerator class parse and validates the parameters, also generates ethernet packets.
     """
+    _parser : ArgParser
 
     _IP_REGEX = r'^(?:(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$'
     _MAC_REGEX = r'^((([0-9A-Fa-f]{2}[:]){5})|(([0-9A-Fa-f]{2}[-]){5}))([0-9A-Fa-f]{2})$'
@@ -235,15 +236,14 @@ class PacketGenerator:
             if not self._dst_mac_valid:
                 print_error(f'Could not find MAC address for {self.__destination_ip_address}', exit_prog=True)
 
-    def __validate_arp_arguments(self, parser):
+    def __validate_arp_arguments(self):
         if self.__destination_ip_address == '':
-            parser.error('For ARP request destination IP address is required.')
+            self._parser.error('For ARP request destination IP address is required.')
 
-    def __validate_non_arp_arguments(self,
-                                     parser):
+    def __validate_non_arp_arguments(self):
 
         if self.__destination_mac_address == '' and self.__destination_ip_address == '':
-            parser.error('At-least one of the destination MAC or IPv4 address is required.')
+            self._parser.error('At-least one of the destination MAC or IPv4 address is required.')
 
         self.__extract_dst_mac_from_dst_ip()
 
@@ -257,13 +257,13 @@ class PacketGenerator:
 
         if self.__ether_type == IPV4_ETH_TYPE:
             if self.__source_ip_address == '':
-                parser.error(f'Source IPv4 address is required for ether type {IPV4_ETH_TYPE_HEX_STR}')
+                self._parser.error(f'Source IPv4 address is required for ether type {IPV4_ETH_TYPE_HEX_STR}')
             elif not self._src_ip_valid:
                 print_error(f'Invalid source address {self.__source_ip_address}')
             elif self.__source_mac_address == '' and self._ips is not None and self.__source_ip_address not in self._ips:
                 print_warning(f'Source Address {self.__source_ip_address} is not confgured on interface {self.__interface_name}')
             if self.__ip_protocol == 0:
-                parser.error(f'IPv4 protocol type is required for ether type {IPV4_ETH_TYPE_HEX_STR}')
+                self._parser.error(f'IPv4 protocol type is required for ether type {IPV4_ETH_TYPE_HEX_STR}')
 
         if self.__payload_file != '' and not self._payload_file_valid:
             print_error(f'Invalid payload file  : {self.__payload_file}', exit_prog=True)
@@ -271,7 +271,7 @@ class PacketGenerator:
         if not self._payload_valid:
             print_error(f'Invalid payload hex stream: {self._payload_str}', exit_prog=True)
 
-    def __extract_validate_arguments(self, args, parser):
+    def __extract_validate_arguments(self, args):
 
         for opt, arg in vars(args).items():
             if opt == 'arp' and arg is not None:
@@ -325,15 +325,15 @@ class PacketGenerator:
             print_error(f'Invalid packet interval: {self._interval_str}', exit_prog=True)
 
         if not self.__arp:
-            self.__validate_non_arp_arguments(parser)
+            self.__validate_non_arp_arguments()
 
             self.__payload = bytes.fromhex(self._payload_str)
         else:
-            self.__validate_arp_arguments(parser)
+            self.__validate_arp_arguments()
 
     def __init__(self, arguments:list):
-        args, parser = parse_arguments(arguments, os.path.splitext(sys.argv[0])[0], VERSION)
-        self.__extract_validate_arguments(args, parser)
+        args, self._parser = parse_arguments(arguments, os.path.splitext(sys.argv[0])[0], VERSION)
+        self.__extract_validate_arguments(args)
 
     def __repr__(self):
         return self.__str__()
@@ -372,6 +372,9 @@ class PacketGenerator:
                         else:
                             attr.append(f'{"":<{first}} {(i * 16):04x}  {s:<{s_first}}{a:<{s_second}}')
         return '\n'.join(attr)
+
+    def help(self):
+        self._parser.print_help()
 
     def send_arp(self):
         """
