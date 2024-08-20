@@ -31,6 +31,9 @@ def main():
         os.system('clear')
 
     class Clock:
+        """
+        Clock class, typecast to str to get the time in format <Hr>:<Min>:<Sec>
+        """
         def __str__(self):
             return time.strftime('%H:%M:%S')
 

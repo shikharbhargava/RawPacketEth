@@ -1,3 +1,5 @@
+[MAIN]
+extension-pkg-allow-list=win32process,win32gui
 [MASTER]
 init-hook='import sys; sys.path.append("./")'
 [FORMAT]
