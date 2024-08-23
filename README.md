@@ -66,7 +66,7 @@ Raw Ethernet Packet Generator is a utility that can be used to generate raw Ethe
 
 Following are the command line options:
 
-| **Option** | <div style="width:120px"></div> | <div style="width:150px">**Value**</div> | <div style="width:280px">**Value Type**</div> | **Description**                                                                                                                                                                                      |
+| **Options** | <div style="width:120px"></div> | <div style="width:150px">**Value**</div> | <div style="width:280px">**Value Type**</div> | **Description**                                                                                                                                                                                      |
 | :--------- | :------------------------------ | :--------------------------------------- | :-------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **-i**     | **--interface**                 | INTERFACE-NAME                           | String                                        | Output interface name                                                                                                                                                                                |
 | **-s**     | **--src_mac**                   | SRC-MAC-ADDRESS                          | Hex MAC Address String (':' or '-' seperated) | Source MAC Address. Optional, if not provided then mac address of the itherface will be used                                                                                                         |
@@ -91,7 +91,7 @@ Following are the command line options:
 
 ### Built With
 
-This utility is a python application hence require python 
+This utility is a python application hence require python version >= 3.6
 
 [![Python][Python]][Python-url] [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
 
