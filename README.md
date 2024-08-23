@@ -59,26 +59,30 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Raw Ethernet Packet Generator Screen Shot][product-screenshot]](images/screenshot.png)
+Manual (Help):
+[![Raw Ethernet Packet Generator Screen Shot][product-screenshot-cmd]](images/screenshot.png)
 
-This utility can be used to generate raw Ethernet ([Ethernet II](https://en.wikipedia.org/wiki/Ethernet_frame#Ethernet_II)) frames on a specefied interface. Following are the ways to generate the packets:
+Raw Ethernet Packet Generator is a utility that can be used to generate raw Ethernet ([Ethernet II](https://en.wikipedia.org/wiki/Ethernet_frame#Ethernet_II)) frames on a specefied interface.
 
-1. &emsp;Ethernet frame with specefied source mac address, destination mac address, [EtherType](https://en.wikipedia.org/wiki/EtherType) and payload byte stream.
-```ssh
-python raw-packet-eth.py -i INTERFACE-NAME -s SRC-MAC-ADDRESS -d DST-MAC-ADDRESS -e ETHER-TYPE -p PAYLOAD-HEX-STREAM
-```
-Example : [**GOOSE**](https://en.wikipedia.org/wiki/GOOSE) Packet (EtherType ***0x88b8***) from ***00-15-5D-93-03-30*** to ***00-15-5D-D6-7F-8A***
-```ssh
-python raw-packet-eth.py -i "Ethernet 1" -s 00-15-5D-93-03-30 -d 00-15-5D-D6-7F-8A -e 0x88b8 -p 0001008c00000000618181801742455353314346472f4c4c4e3024474f24424553535f31810207d0821e42455353314346472f4c4c4e3024424553535f6d6561737572656d656e748306424553535f31840863dc512ca51e64c485030297188601008701008801018901008a0103ab1c870680f901fbd71e870882ffffe801000000870882ffffe801000000
-```
-In the above example, if the source mac address of the specified interface is to be used source mac address can be sipped.
-```ssh
-python raw-packet-eth.py -i INTERFACE-NAME -d DST-MAC-ADDRESS -e ETHER-TYPE -p PAYLOAD-HEX-STREAM
-```
-Similarly, if the destination mac address is not known and the destination machine is IP-capable and supports ARP then destination IP address can also be provided.
-```ssh
-python raw-packet-eth.py -i INTERFACE-NAME -D DST-IP-ADDRESS -e ETHER-TYPE -p PAYLOAD-HEX-STREAM
-```
+Following are the command line options:
+
+| **Option** | <div style="width:120px"></div> | <div style="width:150px">**Value**</div> | <div style="width:280px">**Value Type**</div> | **Description**                                                                                                                                                                                      |
+| :--------- | :------------------------------ | :--------------------------------------- | :-------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **-i**     | **--interface**                 | INTERFACE-NAME                           | String                                        | Output interface name                                                                                                                                                                                |
+| **-s**     | **--src_mac**                   | SRC-MAC-ADDRESS                          | Hex MAC Address String (':' or '-' seperated) | Source MAC Address. Optional, if not provided then mac address of the itherface will be used                                                                                                         |
+| **-d**     | **--dst_mac**                   | DST-MAC-ADDRESS                          | Hex MAC Address String (':' or '-' seperated) | Sestination mac address                                                                                                                                                                              |
+| **-e**     | **--ether_type**                | ETHER-TYPE                               | Int (hex or dec)                              | Ethernet type in hex, required for non ARP packet. Example for IPv4 0x0800 (or 800), GOOSE 0x88B8 ( or 88B8 )                                                                                        |
+| **-S**     | **--src_ip**                    | SRC-IP-ADDRESS                           | IP address String (':' seperated )            | Source ipv4 address, required if ethernet type is 0x0800 (ipv4)                                                                                                                                      |
+| **-D**     | **--dst_ip**                    | DST-IP-ADDRESS                           | IP address String (':' seperated )            | Destination ipv4 address, required if ethernet type is 0x0800 (ipv4)                                                                                                                                 |
+| **-P**     | **--ip_proto**                  | IP-PROTO                                 | Int (hex or dec)                              | IPv4 Protocol type, required if ethernet type is 0x0800 (ipv4)                                                                                                                                       |
+| **-p**     | **--payload**                   | PAYLOAD-HEX-STREAM                       | hex stream                                    | packet payload in hex stream                                                                                                                                                                         |
+| **-f**     | **--payload_file**              | PAYLOAD-FILE                             | Releative or absolute path                    | Packet payload file in hex stream                                                                                                                                                                    |
+| **-c**     | **--packet_count**              | PACKET-COUNT                             | Int                                           | Number of packet to be sent [default=1]                                                                                                                                                              |
+| **-I**     | **--packet_interval**           | PACKET-INTERVAL                          | Time format in (ms, s, h, m, d)               | Time delay between 2 consecutive packets [default=1s, minimum=1ms, supported units={ms,s,m,h,d}]                                                                                                     |
+| **-t**     | **--tcp_server**                | PORT                                     | Int - 0 to 1023                               | Creates a TCP server                                                                                                                                                                                 |
+| **-u**     | **--udp_server**                | PORT                                     | Int - 0 to 1023                               | Creates a UDP server                                                                                                                                                                                 |
+| **-v**     | **--verbose**                   |                                          |                                               | Show output log                                                                                                                                                                                      |
+| **-a**     | **--arp**                       |                                          |                                               | Resolve mac address for an  IPv4 address by sending ARP requests, use -i option for selecting interface, -D option for destinationaddress, -c option for retry count and -I option for timeout time. |
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -87,9 +91,10 @@ python raw-packet-eth.py -i INTERFACE-NAME -D DST-IP-ADDRESS -e ETHER-TYPE -p PA
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+This utility is a python application hence require python 
 
-[![Python][Python]][Python-url]
+[![Python][Python]][Python-url] [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -98,15 +103,14 @@ This section should list any major frameworks/libraries used to bootstrap your p
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+This secton describes the prerequisites for Raw Ethernet Packet Generator.
 
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
+* pip
   ```sh
-  npm install npm@latest -g
+  pip install packgen
   ```
 
 ### Installation
@@ -134,7 +138,25 @@ _Below is an example of how you can instruct your audience on installing and set
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Following are some of the examples to generate Ethernet packets using Raw Ethernet Packet Generator:
+
+1. &emsp;Ethernet frame with specefied source mac address, destination mac address, [EtherType](https://en.wikipedia.org/wiki/EtherType) and payload byte stream.
+```ssh
+python raw-packet-eth.py -i INTERFACE-NAME -s SRC-MAC-ADDRESS -d DST-MAC-ADDRESS -e ETHER-TYPE -p PAYLOAD-HEX-STREAM
+```
+Example : [**GOOSE**](https://en.wikipedia.org/wiki/GOOSE) Packet (EtherType ***0x88b8***) from ***00-15-5D-93-03-30*** to ***00-15-5D-D6-7F-8A***
+```ssh
+python raw-packet-eth.py -i "Ethernet 1" -s 00-15-5D-93-03-30 -d 00-15-5D-D6-7F-8A -e 0x88b8 -p 0001008c00000000618181801742455353314346472f4c4c4e3024474f24424553535f31810207d0821e42455353314346472f4c4c4e3024424553535f6d6561737572656d656e748306424553535f31840863dc512ca51e64c485030297188601008701008801018901008a0103ab1c870680f901fbd71e870882ffffe801000000870882ffffe801000000
+```
+In the above example, if the source mac address of the specified interface is to be used source mac address can be sipped.
+```ssh
+python raw-packet-eth.py -i INTERFACE-NAME -d DST-MAC-ADDRESS -e ETHER-TYPE -p PAYLOAD-HEX-STREAM
+```
+Similarly, if the destination mac address is not known and the destination machine is IP-capable and supports ARP then destination IP address can also be provided.
+```ssh
+python raw-packet-eth.py -i INTERFACE-NAME -D DST-IP-ADDRESS -e ETHER-TYPE -p PAYLOAD-HEX-STREAM
+```
+
 
 _For more examples, please refer to the [Documentation](/documentation/index.html)_
 
@@ -208,7 +230,8 @@ Project Link: [https://github.com/shikharbhargava/raw-packet-eth-win](https://gi
 [x-follow-url]: https://x.com/intent/follow?screen_name=shikharbhargava
 [x-tweet-shield]: https://img.shields.io/twitter/url?url=https%3A%2F%2Fx.com%2Fshikharbhargava&style=social&label=TWEET%20%40shikharbhargava
 [x-tweet-url]: https://x.com/intent/post?text=Wow%3A&url=https%3A%2F%2Fx.com%2Fshikharbhargava
-[product-screenshot]: images/screenshot.png
+[product-screenshot-cmd]: images/screenshot.png
+[product-screenshot-screen]: images/screenshot-screen.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
