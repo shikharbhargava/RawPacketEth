@@ -99,10 +99,10 @@ def parse_arguments(arguments:list, program, version):
     parser.add_argument('-s','--src_mac', metavar='SRC-MAC-ADDRESS', help='Source MAC Address. Optional,'
                                                                            ' if not provided then mac address of the itherface will be used')
     parser.add_argument('-d', '--dst_mac', metavar='DST-MAC-ADDRESS', help='Sestination mac address')
-    parser.add_argument('-e', '--ether_type', metavar='ETHER-TYPE', help='Ethernet type in hex, required')
+    parser.add_argument('-e', '--ether_type', metavar='ETHER-TYPE', help='Ethernet type, required when arp is not enabled')
     parser.add_argument('-S', '--src_ip', metavar='SRC-IP-ADDRESS', help='Source ipv4 address, required if ethernet type is 0x0800 (ipv4)')
     parser.add_argument('-D', '--dst_ip', metavar='DST-IP-ADDRESS', help='Destination ipv4 address, required if ethernet type is 0x0800 (ipv4)')
-    parser.add_argument('-P', '--ip_proto', type=int, metavar='IP-PROTO', help='IPv4 Protocol type, required if ethernet type is 0x0800 (ipv4)')
+    parser.add_argument('-P', '--ip_proto', metavar='IP-PROTO', help='IPv4 Protocol type, required if ethernet type is 0x0800 (ipv4)')
     parser.add_argument('-p', '--payload', metavar='PAYLOAD-HEX-STREAM', help='packet payload in hex stream')
     parser.add_argument('-f', '--payload_file', metavar='PAYLOAD-FILE', help='Packet payload file in hex stream')
     parser.add_argument('-c', '--packet_count', type=int, metavar='PACKET-COUNT', help='Number of packet to be sent [default=1]')
@@ -115,5 +115,8 @@ def parse_arguments(arguments:list, program, version):
                                                                  ' -i option for selecting interface, -D option for destination address,'
                                                                  ' -c option for retry count and -I option for timeout time')
 
-    args = parser.parse_args(args=None if arguments[1:] else ['--help'])
-    return args, parser
+    try:
+        parsed_args = parser.parse_args(args=None if arguments[1:] else ['--help'])
+        return parsed_args, parser
+    except SystemExit:
+        return None, parser

@@ -24,6 +24,8 @@ from scapy.arch.windows import get_windows_if_list
 from utility.argparser import parse_arguments, ArgParser
 from utility.printfunc import print_error, print_warning
 
+from data.proto_type import *
+
 VERSION = "1.0"
 
 # Known IP Protocols
@@ -58,7 +60,7 @@ class PacketGenerator:
     __ether_type = IPV4_ETH_TYPE
     __ip_protocol = 0
     __count = 1
-    __interval = 1
+    __interval = 1000
     __arp = False
     __tcp_server = False
     __tcp_port = 0
@@ -77,6 +79,8 @@ class PacketGenerator:
     _payload_str = ''
     _payload_valid = False
     _payload_file_valid = False
+    _ip_protocol_str = ''
+    _ip_protocol_valid = False
     _interval_str = ''
     _interval_valid = True
     _tcp_port_str = ''
@@ -84,6 +88,7 @@ class PacketGenerator:
     _udp_port_str = ''
     _udp_port_valid = False
     _ips = []
+    _help_mode = False
 
     def __validate_ip(self, ip):
         if re.match(self._IP_REGEX, ip) is not None:
@@ -104,12 +109,32 @@ class PacketGenerator:
             mac = mac.replace('-', ':')
             return True, mac
         return False, mac
+    
+    def __is_int(self, s : str):
+        try:
+            int(s)
+        except ValueError:
+            return False
+        else:
+            return True
 
     def __validate_ether_type(self, ether_type):
         if re.match(self._HEX_ETHER_TYPE_REGEX, ether_type) is not None:
-            eth_type = int(ether_type, 16)
-            return True, eth_type
-        return False, 0
+            ether_type_int = int(ether_type, 16)
+            return True, ether_type_int
+        if self.__is_int(ether_type):
+            ether_type_int = int(ether_type)
+            return True, ether_type_int
+        return EtherProtoNumber(ether_type)
+
+    def __validate_ip_proto(self, ip_proto):
+        if re.match(self._HEX_ETHER_TYPE_REGEX, ip_proto) is not None:
+            ip_proto_int = int(ip_proto, 16)
+            return True, ip_proto_int
+        if self.__is_int(ip_proto):
+            ip_proto_int = int(ip_proto)
+            return True, ip_proto_int
+        return IPProtoNumber(ip_proto)
 
     def __validate_payload(self, payload):
         if re.match(self._HEX_REGEX, payload) is not None:
@@ -255,6 +280,9 @@ class PacketGenerator:
         if not self._eth_type_valid:
             print_error(f'Invalid ether type: {self._eth_type_str}', exit_prog=True)
 
+        if not self._ip_protocol_valid:
+            print_error(f'Invalid IP protocol type: {self._ip_protocol_str}', exit_prog=True)
+
         if self.__ether_type == IPV4_ETH_TYPE:
             if self.__source_ip_address == '':
                 self._parser.error(f'Source IPv4 address is required for ether type {IPV4_ETH_TYPE_HEX_STR}')
@@ -298,7 +326,8 @@ class PacketGenerator:
             if opt == 'dst_ip' and arg is not None:
                 self._dst_ip_valid, self.__destination_ip_address = self.__validate_ip(arg)
             if opt == 'ip_proto' and arg is not None:
-                self.__ip_protocol = arg
+                self._ip_protocol_str = arg
+                self._ip_protocol_valid, self.__ip_protocol = self.__validate_ip_proto(arg)
             if opt == 'payload' and arg is not None:
                 self._payload_valid, self._payload_str = self.__validate_payload(arg)
             if opt == 'payload_file' and arg is not None:
@@ -333,12 +362,17 @@ class PacketGenerator:
 
     def __init__(self, arguments:list):
         args, self._parser = parse_arguments(arguments, os.path.splitext(sys.argv[0])[0], VERSION)
-        self.__extract_validate_arguments(args)
+        if args is not None:
+            self.__extract_validate_arguments(args)
+        else:
+            self._help_mode = True
 
     def __repr__(self):
         return self.__str__()
 
     def __str__(self):
+        if self._help_mode:
+            raise ValueError("NO CONFIGURATIONS, IN HELP MODE!!!")
         attr = []
         first = 30
         second = 75
@@ -360,7 +394,10 @@ class PacketGenerator:
                     continue
                 if name == "ETHER TYPE":
                     name = name + ' (hex)'
-                    value = hex(value)
+                    value = hex(value) + f' ({EtherProtoNameAbbrevation(value)})'
+                if name == "IP PROTOCOL":
+                    name = name + ' (hex)'
+                    value = hex(value) + f' ({IPProtoNameAbbrevation(value)})'
                 if name == "INTERVAL":
                     if  not self.__arp:
                         name = name + ' (ms)'
@@ -391,6 +428,9 @@ class PacketGenerator:
 
     def help(self):
         self._parser.print_help()
+
+    def help_mode(self):
+        return self._help_mode
 
     def send_arp(self):
         """

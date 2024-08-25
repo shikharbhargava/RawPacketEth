@@ -21,11 +21,25 @@ import win32gui
 import win32process
 from packgen import PacketGenerator
 
+menuLeft = dict({
+    KeyCode(char='g'): { 'text' : 'Generate Packet', 'help' : False },
+    KeyCode(char='s'): { 'text' : 'show configurations', 'help' : False },
+    KeyCode(char='c'): { 'text' : 'Clear', 'help' : True },
+})
+
+menuRight = dict({
+    KeyCode(char='m'): { 'text' : 'Manual', 'help' : True },
+    KeyCode(char='q'): { 'text' : 'Quit', 'help' : True, 'second' : Key.esc},
+    KeyCode(char='?'): { 'text' : None, 'help' : True }
+})
+
 def main():
     """
     Main function, Initializes PacketGenerator  and sends configured packet
     """
     default_string = 'Press a key to choose an option from the bottom menu.'
+    __help_mode_keys = list()
+    __general_keys = list()
 
     def clear_screen():
         os.system('clear')
@@ -42,6 +56,11 @@ def main():
 
     initial_focus_process = win32process.GetWindowThreadProcessId(win32gui.GetForegroundWindow())
 
+    def  __findKey(key : KeyCode, help_mode = False):
+        if (help and  key in __help_mode_keys) or (key in __general_keys):
+            return True
+        return False
+
     def start_listener(gen:PacketGenerator):
         keyboard = Controller()
         esc = False
@@ -53,6 +72,9 @@ def main():
             focus_process = win32process.GetWindowThreadProcessId(win32gui.GetForegroundWindow())
             if focus_process != initial_focus_process:
                 return False
+            found = __findKey(key)
+            if gen.help_mode() and not found:
+                return True
             if key == Key.esc or str(key) == "'q'":
                 keyboard.press(Key.esc)
                 keyboard.release(Key.esc)
@@ -74,8 +96,12 @@ def main():
                 clear_screen()
                 print(default_string)
             elif str(key) in ("'s'", "'S'"):
-                print('Configurations...')
-                print(gen)
+                try:
+                    config = str(gen)
+                    print('Configurations...')
+                    print(config)
+                except ValueError as e:
+                    print(e)
                 print(default_string)
             elif str(key) in ("'m'", "'M'"):
                 gen.help()
@@ -95,17 +121,61 @@ def main():
 
     gen = PacketGenerator(sys.argv)
     clear_screen()
+
+    for l, v in (menuLeft | menuRight).items():
+        __general_keys.append(l)
+        try:
+            help = v['help']
+            if help:
+                __help_mode_keys.append(l)
+            second = v['second']
+            __general_keys.append(second)
+            if help:
+                __help_mode_keys.append(second)
+        except KeyError:
+            pass
+
+
     print(default_string)
-    bb.add('Generate Packet', label='g')
-    bb.add('show configurations', label='s')
-    bb.add('clear', label='c')
+    for l, v in menuLeft.items():
+        second = None
+        try:
+            second = v['second']
+        except KeyError:
+            pass
+        show = (not gen.help_mode()) or v['help']
+        if show:
+            text = v['text']
+            lable = l.char
+            if second is not None:
+                second_key = str(second).split('.')[1]
+                lable = lable + f' or {second_key}'
+            if text is not None and show:
+                bb.add(text, label=lable)
+            else:
+                bb.add(lable)
     bb.add(Clock(), label='time', right=True, refresh=1)
-    bb.add('to quit', label='esc or q', right=True)
-    bb.add('man', label='m', right=True)
+    for l, v in reversed(menuRight.items()):
+        second = None
+        try:
+            second = v['second']
+        except KeyError:
+            pass
+        text = v['text']
+        show = (not gen.help_mode()) or v['help']
+        if show:
+            lable = l.char
+            if second is not None:
+                second_key = str(second).split('.')[1]
+                lable = lable + f' or {second_key}'
+            if text is not None:
+                bb.add(text, label=lable, right=True)
+            else:
+                bb.add(lable, right=True)
     listener_thread = threading.Thread(target=lambda: start_listener(gen))
     listener_thread.start()
     listener_thread.join()
-    clear_screen()
+    #clear_screen()
 
 if __name__=="__main__":
     main()
