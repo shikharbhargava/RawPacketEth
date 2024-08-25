@@ -26,7 +26,7 @@ from data.proto_type import *
 
 menuLeft = dict({
     KeyCode(char='g'): { 'text' : 'Generate Packet', 'help' : False },
-    KeyCode(char='s'): { 'text' : 'show configurations', 'help' : False },
+    KeyCode(char='s'): { 'text' : 'Show Configurations', 'help' : False },
     KeyCode(char='c'): { 'text' : 'Clear', 'help' : True },
 })
 
