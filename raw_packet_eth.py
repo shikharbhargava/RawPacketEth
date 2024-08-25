@@ -135,8 +135,9 @@ def main():
         except KeyError:
             pass
 
-
     print(default_string)
+    if gen.help_mode():
+        print(gen.help())
     for l, v in menuLeft.items():
         second = None
         try:
