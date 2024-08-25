@@ -26,6 +26,12 @@ def print_warning(*err : str):
     """
     print(Fore.YELLOW + 'WARNING: ' + ' '.join(err) + Style.RESET_ALL, file=sys.stderr)
 
+def print_note(*err : str):
+    """
+    Prints the note statement in BLUE color
+    """
+    print(Fore.RED + 'NOTE: ' + Fore.BLUE + ' '.join(err) + Style.RESET_ALL, file=sys.stderr)
+
 def clear_screen():
     # For Windows
     if os.name == 'nt':

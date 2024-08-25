@@ -21,6 +21,9 @@ import win32gui
 import win32process
 from packgen import PacketGenerator
 
+from utility.printfunc import *
+from data.proto_type import *
+
 menuLeft = dict({
     KeyCode(char='g'): { 'text' : 'Generate Packet', 'help' : False },
     KeyCode(char='s'): { 'text' : 'show configurations', 'help' : False },
@@ -30,7 +33,12 @@ menuLeft = dict({
 menuRight = dict({
     KeyCode(char='m'): { 'text' : 'Manual', 'help' : True },
     KeyCode(char='q'): { 'text' : 'Quit', 'help' : True, 'second' : Key.esc},
-    KeyCode(char='?'): { 'text' : None, 'help' : True }
+    KeyCode(char='?'): { 'text' : 'More', 'help' : True }
+})
+
+hiddenKeys = dict({
+    KeyCode(char='e'): { 'text' : 'ether', 'help' : True },
+    KeyCode(char='p'): { 'text' : 'ip proto', 'help' : True }
 })
 
 def main():
@@ -57,9 +65,9 @@ def main():
     initial_focus_process = win32process.GetWindowThreadProcessId(win32gui.GetForegroundWindow())
 
     def  __findKey(key : KeyCode, help_mode = False):
-        if (help and  key in __help_mode_keys) or (key in __general_keys):
-            return True
-        return False
+        if help_mode:
+            return key in __help_mode_keys
+        return (key in __general_keys) or (key in hiddenKeys.keys())
 
     def start_listener(gen:PacketGenerator):
         keyboard = Controller()
@@ -72,8 +80,8 @@ def main():
             focus_process = win32process.GetWindowThreadProcessId(win32gui.GetForegroundWindow())
             if focus_process != initial_focus_process:
                 return False
-            found = __findKey(key)
-            if gen.help_mode() and not found:
+            found = __findKey(key, help_mode = gen.help_mode())
+            if not found:
                 return True
             if key == Key.esc or str(key) == "'q'":
                 keyboard.press(Key.esc)
@@ -83,18 +91,13 @@ def main():
                     esc = True
                     return False
                 if c in ('n', 'N'):
-                    print(default_string)
                     return True
                 print("Invalid input!")
-                print(default_string)
-                return True
             if str(key) in ("'g'", "'G'"):
                 print('Generating Packet(s)...')
                 gen.send_packet()
-                print(default_string)
             elif str(key) in ("'c'", "'C'"):
                 clear_screen()
-                print(default_string)
             elif str(key) in ("'s'", "'S'"):
                 try:
                     config = str(gen)
@@ -102,12 +105,38 @@ def main():
                     print(config)
                 except ValueError as e:
                     print(e)
-                print(default_string)
             elif str(key) in ("'m'", "'M'"):
                 gen.help()
-                print(default_string)
-            #else:
-            #    print(f'Unknown option: {str(key)}')
+            elif str(key) in ("'?'"):
+                index_len = 8
+                option_len = 10
+                des_len = 50
+                print('More options:\n')
+                print(f'{"Index":<{index_len}}{"Option":<{option_len}}{"Description":<{des_len}}')
+                print(f'{"-"*index_len}{"-"*option_len}{"-"*des_len}')
+                print(f'{"1":<{index_len}}{"e":<{option_len}} {"List all exceptable ether type strings.":<{des_len}}')
+                print(f'{"2":<{index_len}}{"p":<{option_len}} {"List all exceptable IP protocol type strings.":<{des_len}}')
+            elif str(key) in ("'e'", "'E'"):
+                PrintEtherType()
+            elif str(key) in ("'p'", "'P'"):
+                PrintIpProtocolType()
+            else:
+            #    if key in {Key.alt, Key.alt_l, Key.alt_r,
+            #               Key.ctrl, Key.ctrl_l, Key.ctrl_r,
+            #               Key.cmd, Key.cmd_l, Key.cmd_r,
+            #               Key.shift, Key.shift_l, Key.shift_r,
+            #               Key.menu
+            #               }:
+            #        return
+            #    
+            #    option = str(key)
+            #    if '.' in option:
+            #        option = option.split('.')[1]
+            #    print(f'Unknown option: {option}')
+                return
+            print()
+            print_note(default_string)
+            print()
             return True
 
         listener:Listener = None
@@ -134,10 +163,23 @@ def main():
                 __help_mode_keys.append(second)
         except KeyError:
             pass
-
-    print(default_string)
+    for l, v in (hiddenKeys).items():
+        try:
+            help = v['help']
+            if help:
+                __help_mode_keys.append(l)
+            second = v['second']
+            if help:
+                __help_mode_keys.append(second)
+        except KeyError:
+            pass
     if gen.help_mode():
-        print(gen.help())
+        gen.help()
+        print_warning('\nHELP MODE ACTIVE! Quit and configure using command line options. Press \'?\' for more options.\n')
+
+    print_note(default_string)
+    print()
+
     for l, v in menuLeft.items():
         second = None
         try:

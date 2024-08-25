@@ -65,6 +65,21 @@ __EtherType = dict({
     0xF1C1 : {'name' : 'Time-Sensitive Networking', 'abb' : 'TSN'}
 })
 
+def PrintEtherType():
+    index_len = 8
+    name_len = 100
+    abb_len = 20
+    number_len = 10
+    print(f'{"Index":<{index_len}}{"Ether Type Name":<{name_len}}{"Abbreviation":<{abb_len}}{"Number":<{number_len}}')
+    print(f'{"-"*index_len}{"-"*name_len}{"-"*abb_len}{"-"*number_len}')
+    i = 1
+    for k, v in __EtherType.items():
+        name  = v['name']
+        abb   = v['abb']
+        value = hex(k)
+        print(f'{i:<{index_len}}{name:<{name_len}}{abb:<{abb_len}}{value:<{number_len}}')
+        i += 1
+
 def EtherProtoName(number : int):
     return __EtherType[number]['name']
 
@@ -229,6 +244,22 @@ __IPProto = dict({
     0x90 : {'name' : 'AGGFRAG Encapsulation Payload for ESP', 'abb' : 'AGGFRAG'},
     0x91 : {'name' : 'Network Service Header', 'abb' : 'NSH'},
 })
+
+def PrintIpProtocolType():
+    index_len = 8
+    name_len = 100
+    abb_len = 20
+    number_len = 10
+    print(f'{"Index":<{index_len}}{"IP Protocol Name":<{name_len}}{"Abbreviation":<{abb_len}}{"Number":<{number_len}}')
+    print(f'{"-"*index_len}{"-"*name_len}{"-"*abb_len}{"-"*number_len}')
+    i = 1
+    for k, v in __IPProto.items():
+        name  = v['name']
+        abb   = v['abb']
+        value = hex(k)
+        print(f'{i:<{index_len}}{name:<{name_len}}{abb:<{abb_len}}{value:<{number_len}}')
+        i += 1
+
 
 def IPProtoName(number : int):
     return __IPProto[number]['name']

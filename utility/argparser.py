@@ -15,7 +15,7 @@ import textwrap
 
 from argparse import ArgumentParser
 from colorama import Fore, Style
-from utility.printfunc import print_error
+from utility.printfunc import *
 
 OPTIONS_REGEX = r'(((-){1,2}[a-z_]+)|((-){1,2}[A-Z]))([ \,\]])(([A-Z\-]+){0,1})'
 ALL_OPTIONS_REGEX = r'(((-){1}[a-z_]+)|((-){1,2}[A-Z]))([ \,])(([A-Z\-]+){0,1}), ((-){2}[a-z_]+)([ \,])(([A-Z\-]+){0,1})'

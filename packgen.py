@@ -22,7 +22,7 @@ from scapy.sendrecv import _send
 from scapy.arch.windows import get_windows_if_list
 
 from utility.argparser import parse_arguments, ArgParser
-from utility.printfunc import print_error, print_warning
+from utility.printfunc import *
 
 from data.proto_type import *
 
