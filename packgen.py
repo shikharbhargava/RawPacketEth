@@ -13,6 +13,7 @@ import re
 #import json
 import random
 import textwrap
+import time
 
 from scapy.all import Raw, srp, send
 #from scapy.all import sendp
@@ -349,6 +350,7 @@ class PacketGenerator:
         if len(self.__interface_name) == 0:
             if self._interactive_window:
                 print_warning("Interface name provided, hence entering HELP MODE")
+                time.sleep(5)
                 self._help_mode = True
                 return
             else:
