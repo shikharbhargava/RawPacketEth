@@ -27,7 +27,7 @@ from data.proto_type import *
 menuLeft = dict({
     KeyCode(char='g'): { 'text' : 'Generate Packet', 'help' : False },
     KeyCode(char='s'): { 'text' : 'Show Configurations', 'help' : False },
-    KeyCode(char='c'): { 'text' : 'Clear', 'help' : True },
+    KeyCode(char='c'): { 'text' : 'Clear Log', 'help' : True },
 })
 
 menuRight = dict({
@@ -37,15 +37,16 @@ menuRight = dict({
 })
 
 hiddenKeys = dict({
-    KeyCode(char='e'): { 'text' : 'ether', 'help' : True },
-    KeyCode(char='p'): { 'text' : 'ip proto', 'help' : True }
+    KeyCode(char='e'): { 'description' : 'List all exceptable ether type strings.', 'help' : True },
+    KeyCode(char='p'): { 'description' : 'List all exceptable IP protocol type strings.', 'help' : True },
+    KeyCode(char='r'): { 'description' : 'Reconfigure the packet', 'help' : False }
 })
 
 def main():
     """
     Main function, Initializes PacketGenerator  and sends configured packet
     """
-    default_string = 'Press a key to choose an option from the bottom menu.'
+    default_string = 'Press a key to choose an option from the bottom menu. or Press \'?\' for more options.'
     __help_mode_keys = list()
     __general_keys = list()
 
@@ -114,8 +115,24 @@ def main():
                 print('More options:\n')
                 print(f'{"Index":<{index_len}}{"Option":<{option_len}}{"Description":<{des_len}}')
                 print(f'{"-"*index_len}{"-"*option_len}{"-"*des_len}')
-                print(f'{"1":<{index_len}}{"e":<{option_len}} {"List all exceptable ether type strings.":<{des_len}}')
-                print(f'{"2":<{index_len}}{"p":<{option_len}} {"List all exceptable IP protocol type strings.":<{des_len}}')
+                hIndex = 1
+                for k, v in hiddenKeys.items():
+                    hiddenKey = str(k)
+                    if '.' in hiddenKey:
+                        hiddenKey = hiddenKey.split('.')[1]
+                    try:
+                        description = v['description']
+                        supports_help = False
+                        try:
+                            supports_help = v['help']
+                        except KeyError:
+                            pass
+                        if not gen.help_mode() or (gen.help_mode() == supports_help):
+                            print(f'{hIndex:<{index_len}}{hiddenKey:<{option_len}} {description:<{des_len}}')
+                            hIndex += 1
+                    except KeyError:
+                        pass
+
             elif str(key) in ("'e'", "'E'"):
                 PrintEtherType()
             elif str(key) in ("'p'", "'P'"):
@@ -149,6 +166,13 @@ def main():
                 listener.join()
 
     gen = PacketGenerator(sys.argv)
+    if gen.help_mode() and not gen.interactive_window_mode():
+        return
+
+    if not gen.interactive_window_mode():
+        gen.send_packet()
+        return
+    
     clear_screen()
 
     for l, v in (menuLeft | menuRight).items():
@@ -173,6 +197,7 @@ def main():
                 __help_mode_keys.append(second)
         except KeyError:
             pass
+        
     if gen.help_mode():
         gen.help()
         print_warning('\nHELP MODE ACTIVE! Quit and configure using command line options. Press \'?\' for more options.\n')

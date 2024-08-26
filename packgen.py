@@ -89,6 +89,7 @@ class PacketGenerator:
     _udp_port_valid = False
     _ips = []
     _help_mode = False
+    _interactive_window = False
 
     def __validate_ip(self, ip):
         if re.match(self._IP_REGEX, ip) is not None:
@@ -302,44 +303,56 @@ class PacketGenerator:
     def __extract_validate_arguments(self, args):
 
         for opt, arg in vars(args).items():
-            if opt == 'arp' and arg is not None:
+            if opt == 'help' and arg is not None:
+                self._help_mode=True
+            elif opt == 'interactive_window' and arg is not None:
+                self._interactive_window = arg
+            elif opt == 'arp' and arg is not None:
                 self.__arp = arg
-            if opt == 'tcp_server' and arg is not None:
+            elif opt == 'tcp_server' and arg is not None:
                 self._tcp_port_str = arg
                 self.__tcp_server = True
                 self._tcp_port_valid, self.__tcp_port = self.__validate_port(arg)
-            if opt == 'udp_server' and arg is not None:
+            elif opt == 'udp_server' and arg is not None:
                 self._udp_port_str = arg
                 self.__udp_server = True
                 self._udp_port_valid, self.__udp_port = self.__validate_port(arg)
-            if opt == 'interface' and arg is not None:
+            elif opt == 'interface' and arg is not None:
                 self.__interface_name = arg
-            if opt == 'src_mac' and arg is not None:
+            elif opt == 'src_mac' and arg is not None:
                 self._src_mac_valid, self.__source_mac_address = self.__validate_mac(arg)
-            if opt == 'dst_mac' and arg is not None:
+            elif opt == 'dst_mac' and arg is not None:
                 self._dst_mac_valid, self.__destination_mac_address = self.__validate_mac(arg)
-            if opt == 'ether_type' and arg is not None:
+            elif opt == 'ether_type' and arg is not None:
                 self._eth_type_str = arg
                 self._eth_type_valid, self.__ether_type = self.__validate_ether_type(arg)
-            if opt == 'src_ip' and arg is not None:
+            elif opt == 'src_ip' and arg is not None:
                 self._src_ip_valid, self.__source_ip_address = self.__validate_ip(arg)
-            if opt == 'dst_ip' and arg is not None:
+            elif opt == 'dst_ip' and arg is not None:
                 self._dst_ip_valid, self.__destination_ip_address = self.__validate_ip(arg)
-            if opt == 'ip_proto' and arg is not None:
+            elif opt == 'ip_proto' and arg is not None:
                 self._ip_protocol_str = arg
                 self._ip_protocol_valid, self.__ip_protocol = self.__validate_ip_proto(arg)
-            if opt == 'payload' and arg is not None:
+            elif opt == 'payload' and arg is not None:
                 self._payload_valid, self._payload_str = self.__validate_payload(arg)
-            if opt == 'payload_file' and arg is not None:
+            elif opt == 'payload_file' and arg is not None:
                 self.__payload_file = arg
                 self._payload_file_valid, self._payload_valid, self._payload_str = self.__validate_payload_paload_file()
-            if opt == 'packet_count' and arg is not None:
+            elif opt == 'packet_count' and arg is not None:
                 self.__count = arg
-            if opt == 'packet_interval' and arg is not None:
+            elif opt == 'packet_interval' and arg is not None:
                 self._interval_str = arg
                 self._interval_valid , self.__interval = self.__validate_time(arg)
-            if opt == 'verbose' and arg is not None:
+            elif opt == 'verbose' and arg is not None:
                 self.__verbose=arg
+        
+        if len(self.__interface_name) == 0:
+            if self._interactive_window:
+                print_warning("Interface name provided, hence entering HELP MODE")
+                self._help_mode = True
+                return
+            else:
+                print_error('Interface name is required!', exit_prog=True)
 
         if self.__source_mac_address == '':
             self.__source_mac_address, self._ips = self.__get_mac_address(self.__interface_name)
@@ -431,6 +444,9 @@ class PacketGenerator:
 
     def help_mode(self):
         return self._help_mode
+
+    def interactive_window_mode(self):
+        return self._interactive_window
 
     def send_arp(self):
         """

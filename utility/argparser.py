@@ -95,7 +95,7 @@ def parse_arguments(arguments:list, program, version):
     Creates and parses the command line arguments
     """
     parser = ArgParser(program=program, version=version, description='Sends raw packets on an interface.')
-    parser.add_argument('-i', '--interface', metavar='INTERFACE-NAME', required=True, help='Output interface name')
+    parser.add_argument('-i', '--interface', metavar='INTERFACE-NAME', help='Output interface name')
     parser.add_argument('-s','--src_mac', metavar='SRC-MAC-ADDRESS', help='Source MAC Address. Optional,'
                                                                            ' if not provided then mac address of the itherface will be used')
     parser.add_argument('-d', '--dst_mac', metavar='DST-MAC-ADDRESS', help='Sestination mac address')
@@ -111,6 +111,7 @@ def parse_arguments(arguments:list, program, version):
     parser.add_argument('-t', '--tcp_server', metavar='PORT', help='Creates a TCP server')
     parser.add_argument('-u', '--udp_server', metavar='PORT', help='Creates a UDP server')
     parser.add_argument('-v', '--verbose', action='store_true', help='Show output log')
+    parser.add_argument('-w', '--interactive_window', action='store_true', help='Open the application in interactive window mode')
     parser.add_argument('-a', '--arp', action='store_true', help='Resolve mac address for an IPv4 address by sending ARP requests, use'
                                                                  ' -i option for selecting interface, -D option for destination address,'
                                                                  ' -c option for retry count and -I option for timeout time')
